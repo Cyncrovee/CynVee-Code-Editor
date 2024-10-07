@@ -151,12 +151,12 @@ func _on_save_dialog_file_selected(path: String) -> void:
 func _on_load_dialog_file_selected(path: String) -> void:
 	print(path)
 	var extension = (path.get_extension())
-	if extension == "txt" or extension == "md" or extension == "gd" or extension == "cs" or extension == "rs" or extension == "java" or extension == "py" or extension == "kt" or extension == "xaml":
+	if extension == "txt" or extension == "md" or extension == "json" or extension == "toml" or extension == "gd" or extension == "cs" or extension == "rs" or extension == "java" or extension == "py" or extension == "kt" or extension == "xaml" or extension == "csproj" or extension == "gitignore":
 		var load_file = FileAccess.open((path), FileAccess.READ)
 		editor.text = load_file.get_as_text()
 		current_file = (path)
 	else:
-		print("Not a supported file")
+		print(extension + " is not a supported file type")
 
 func _on_folder_dialog_dir_selected(dir: String) -> void:
 	print(dir)
@@ -183,13 +183,13 @@ func _on_file_list_item_activated(index: int) -> void:
 	print(extension)
 	print(combined_path)
 	
-	if extension == "txt" or extension == "md" or extension == "gd" or extension == "cs" or extension == "rs" or extension == "java" or extension == "py" or extension == "kt" or extension == "xaml":
+	if extension == "txt" or extension == "md" or extension == "json" or extension == "toml" or extension == "gd" or extension == "cs" or extension == "rs" or extension == "java" or extension == "py" or extension == "kt" or extension == "xaml" or extension == "csproj" or extension == "gitignore":
 		var load_file = FileAccess.open((combined_path), FileAccess.READ)
 		var file_text = load_file.get_as_text()
 		editor.text = file_text
 		current_file = (combined_path)
 	else:
-		print("Not a supported file")
+		print(extension + " is not a supported file type")
 
 func _on_editor_text_changed() -> void:
 	pass
