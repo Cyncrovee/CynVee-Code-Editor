@@ -21,7 +21,9 @@ func _ready() -> void:
 	
 	save_dialog.current_dir = "/"
 	load_dialog.current_dir = "/"
+	folder_dialog.current_dir = "/"
 	
+	# Add popup items to the menu bar
 	for f in ["New", "Open", "Open Folder", "Save", "Save As..."]:
 		if f:
 			file_tab.get_popup().add_item(f)
@@ -38,9 +40,10 @@ func _ready() -> void:
 		else:
 			view_tab.get_popup().add_seperator()
 	
-	for control_highlight in ["if", "else", "elif", "switch", "match", "break"]:
+	# Define keywords and colors for syntax highlighting
+	for control_highlight in ["if", "else", "elif", "switch", "match", "break", "while", "for", "in", "foreach"]:
 		editor.syntax_highlighter.add_keyword_color (control_highlight, Color("#4c908e"))
-	for keyword_highlight in ["var", "int", "string", "bool", "float", "double", "char", "func", "true", "false", "for", "in"]:
+	for keyword_highlight in ["var", "int", "string", "bool", "float", "double", "char", "try", "catch", "throw", "function", "func", "method", "def", "true", "false", "private", "public", "void", "class"]:
 		editor.syntax_highlighter.add_keyword_color (keyword_highlight, Color("#936ebe"))
 	
 	var file_popup = file_tab.get_popup()
@@ -51,6 +54,7 @@ func _ready() -> void:
 	edit_popup.id_pressed.connect(edit_menu)
 	view_popup.id_pressed.connect(view_menu)
 
+# Define processes/funtions for menu bar popup items
 func file_menu(id):
 	match id:
 		0:
@@ -100,16 +104,9 @@ func view_menu(id):
 		2:
 			print("Fullsreen")
 
+# Show dialog funtions
 func save_file():
 	save_dialog.show()
-
-func quick_save():
-	if current_file != null:
-		var file = FileAccess.open((current_file), FileAccess.WRITE)
-		var content = editor.text
-		file.store_string(content)
-	else:
-		pass
 
 func load_file():
 	load_dialog.show()
@@ -117,7 +114,9 @@ func load_file():
 func load_folder():
 	folder_dialog.show()
 
+# Dialog main funtions
 func _on_save_dialog_file_selected(path: String) -> void:
+	print(path)
 	var file = FileAccess.open((path), FileAccess.WRITE)
 	var content = editor.text
 	file.store_string(content)
@@ -138,11 +137,21 @@ func _on_folder_dialog_dir_selected(dir: String) -> void:
 	for x in file_names:
 		file_list.add_item(x)
 
+# Misc functions
+func quick_save():
+	if current_file != null:
+		var file = FileAccess.open((current_file), FileAccess.WRITE)
+		var content = editor.text
+		file.store_string(content)
+	else:
+		pass
+
 func _on_file_list_item_activated(index: int) -> void:
 	pass # Replace with function body.
 
 func _on_editor_text_changed() -> void:
-	var editor_text = editor.text
+	pass
+	# var editor_text = editor.text
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
