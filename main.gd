@@ -47,8 +47,12 @@ func _ready() -> void:
 	# Define keywords and colors for syntax highlighting
 	for control_highlight in ["if", "else", "elif", "switch", "match", "break", "while", "for", "in", "foreach"]:
 		editor.syntax_highlighter.add_keyword_color (control_highlight, Color("#4c908e"))
-	for keyword_highlight in ["var", "int", "string", "bool", "float", "double", "char", "try", "catch", "throw", "function", "func", "method", "def", "true", "false", "private", "public", "void", "class"]:
+	for keyword_highlight in ["var", "int", "string", "bool", "float", "double", "char", "null", "object", "new", "try", "catch", "throw", "await", "function", "func", "method", "def", "true", "false", "using", "async", "namespace", "private", "public", "void", "class", "extends"]:
 		editor.syntax_highlighter.add_keyword_color (keyword_highlight, Color("#936ebe"))
+	editor.syntax_highlighter.add_color_region('"', '"', Color("#FF9800"))
+	editor.syntax_highlighter.add_color_region("//", "", Color("#646060"))
+	editor.syntax_highlighter.add_color_region("/*", "*/", Color("#646060"))
+	
 	
 	var file_popup = file_tab.get_popup()
 	var edit_popup = edit_tab.get_popup()
@@ -146,13 +150,17 @@ func _on_save_dialog_file_selected(path: String) -> void:
 
 func _on_load_dialog_file_selected(path: String) -> void:
 	print(path)
-	var load_file = FileAccess.open((path), FileAccess.READ)
-	editor.text = load_file.get_as_text()
-	current_file = (path)
-	file_list.add_item(current_file)
+	var extension = (path.get_extension())
+	if extension == "txt" or extension == "md" or extension == "gd" or extension == "cs" or extension == "rs" or extension == "java" or extension == "py" or extension == "kt" or extension == "xaml":
+		var load_file = FileAccess.open((path), FileAccess.READ)
+		editor.text = load_file.get_as_text()
+		current_file = (path)
+	else:
+		print("Not a supported file")
 
 func _on_folder_dialog_dir_selected(dir: String) -> void:
 	print(dir)
+	file_list.clear()
 	current_folder = (dir)
 	var open_dir = DirAccess.open(dir)
 	var file_names = open_dir.get_files()
@@ -169,7 +177,19 @@ func quick_save():
 		pass
 
 func _on_file_list_item_activated(index: int) -> void:
-	pass # Replace with function body.
+	var file = file_list.get_item_text(file_list.get_selected_items()[0])
+	var combined_path = (current_folder + "/" + file)
+	var extension = (combined_path.get_extension())
+	print(extension)
+	print(combined_path)
+	
+	if extension == "txt" or extension == "md" or extension == "gd" or extension == "cs" or extension == "rs" or extension == "java" or extension == "py" or extension == "kt" or extension == "xaml":
+		var load_file = FileAccess.open((combined_path), FileAccess.READ)
+		var file_text = load_file.get_as_text()
+		editor.text = file_text
+		current_file = (combined_path)
+	else:
+		print("Not a supported file")
 
 func _on_editor_text_changed() -> void:
 	pass

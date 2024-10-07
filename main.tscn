@@ -4,7 +4,7 @@
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_n184i"]
 number_color = Color(0.299645, 0.566471, 0.55656, 1)
-symbol_color = Color(0.79526, 0.361771, 0.264662, 1)
+symbol_color = Color(0.966566, 0.969263, 0.975219, 1)
 function_color = Color(0.278876, 0.515068, 0.82677, 1)
 member_variable_color = Color(0.773577, 0.311769, 0.622746, 1)
 
