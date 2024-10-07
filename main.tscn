@@ -1,0 +1,104 @@
+[gd_scene load_steps=3 format=3 uid="uid://3rcosmbe1efg"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_cq6s1"]
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_n184i"]
+number_color = Color(0.299645, 0.566471, 0.55656, 1)
+symbol_color = Color(0.79526, 0.361771, 0.264662, 1)
+function_color = Color(0.278876, 0.515068, 0.82677, 1)
+member_variable_color = Color(0.773577, 0.311769, 0.622746, 1)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cq6s1")
+
+[node name="Editor" type="CodeEdit" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 32.0
+offset_right = 991.0
+offset_bottom = 648.0
+minimap_draw = true
+caret_blink = true
+syntax_highlighter = SubResource("CodeHighlighter_n184i")
+highlight_all_occurrences = true
+highlight_current_line = true
+draw_control_chars = true
+draw_tabs = true
+gutters_draw_breakpoints_gutter = true
+gutters_draw_bookmarks = true
+gutters_draw_executing_lines = true
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+code_completion_enabled = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="TabPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1216.0
+offset_bottom = 32.0
+
+[node name="TabContainer" type="HBoxContainer" parent="TabPanel"]
+layout_mode = 0
+offset_left = 32.0
+offset_right = 1088.0
+offset_bottom = 32.0
+theme_override_constants/separation = 30
+
+[node name="File" type="MenuButton" parent="TabPanel/TabContainer"]
+layout_mode = 2
+text = "File"
+switch_on_hover = true
+
+[node name="Edit" type="MenuButton" parent="TabPanel/TabContainer"]
+layout_mode = 2
+text = "Edit"
+switch_on_hover = true
+
+[node name="View" type="MenuButton" parent="TabPanel/TabContainer"]
+layout_mode = 2
+text = "View"
+switch_on_hover = true
+
+[node name="FileList" type="ItemList" parent="."]
+layout_mode = 0
+offset_left = 992.0
+offset_top = 32.0
+offset_right = 1200.0
+offset_bottom = 648.0
+
+[node name="SaveDialog" type="FileDialog" parent="."]
+initial_position = 2
+size = Vector2i(450, 600)
+access = 2
+
+[node name="LoadDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 2
+size = Vector2i(450, 600)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="FolderDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(450, 600)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+
+[connection signal="text_changed" from="Editor" to="." method="_on_editor_text_changed"]
+[connection signal="item_activated" from="FileList" to="." method="_on_file_list_item_activated"]
+[connection signal="file_selected" from="SaveDialog" to="." method="_on_save_dialog_file_selected"]
+[connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]
+[connection signal="dir_selected" from="FolderDialog" to="." method="_on_folder_dialog_dir_selected"]
