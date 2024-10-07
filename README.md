@@ -5,6 +5,7 @@ A code editor made with Godot
 ### Currently features
 - Syntax highlighting
 - Opening a folder as a workspace
+- Enable/Disable fullscreen
 - Line numbers
 - Minimap
 

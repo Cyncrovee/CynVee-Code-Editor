@@ -15,6 +15,8 @@ extends Control
 @onready var current_file = null
 @onready var current_folder = null
 
+@onready var is_fullscreen = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	DisplayServer.window_set_title("CynVee-Code-Editor")
@@ -103,6 +105,12 @@ func view_menu(id):
 			print("Minimap")
 		2:
 			print("Fullsreen")
+			if is_fullscreen == false:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+				is_fullscreen = true
+			elif is_fullscreen == true:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+				is_fullscreen = false
 
 # Show dialog funtions
 func save_file():
