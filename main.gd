@@ -15,6 +15,8 @@ extends Control
 @onready var current_file = null
 @onready var current_folder = null
 
+@onready var is_line_number = true
+@onready var is_minimap = true
 @onready var is_fullscreen = false
 
 # Called when the node enters the scene tree for the first time.
@@ -101,8 +103,20 @@ func view_menu(id):
 	match id:
 		0:
 			print("Line Number")
+			if is_line_number == true:
+				editor.gutters_draw_line_numbers = false
+				is_line_number = false
+			elif is_line_number == false:
+				editor.gutters_draw_line_numbers = true
+				is_line_number = true
 		1:
 			print("Minimap")
+			if is_minimap == true:
+				editor.minimap_draw = false
+				is_minimap = false
+			elif is_minimap == false:
+				editor.minimap_draw = true
+				is_minimap = true
 		2:
 			print("Fullsreen")
 			if is_fullscreen == false:
