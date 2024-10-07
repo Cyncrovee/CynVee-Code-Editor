@@ -11,4 +11,4 @@ A code editor made with Godot
 ### Currently does not feature/Yet to add
 - Code completion
 - Seperate language support
-- Disable/Enable line numbers/minimap
+- Disable/Re-enable line numbers/minimap
