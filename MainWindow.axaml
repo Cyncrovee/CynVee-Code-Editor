@@ -28,14 +28,14 @@
         <Button x:Name="LoadButton" IsVisible="False" Click="LoadButton_OnClick" Content="Load" Margin="60,0,0,0" Grid.Column="0" Grid.Row="0"/>
         <Button x:Name="DeleteButton" IsVisible="False" Click="DeleteButton_OnClick" Content="Delete" Margin="120,0,0,0" Grid.Column="0" Grid.Row="0"/>
         
-        <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Grid.Column="0" Grid.Row="1"/>
-        <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Grid.Column="0" Grid.Row="2"/>
+        <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Margin="0,5,0,5" Grid.Column="0" Grid.Row="1"/>
+        <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="2"/>
         
         <Button x:Name="OpenFolderButton" Click="OpenFolderButton_OnClick" Content="Open Folder" HorizontalAlignment="Right" Margin="0,0,160,0" Grid.Column="1" Grid.Row="0"/>
         <Button x:Name="OpenFileButton" Click="OpenFileButton_OnClick" Content="Open File" HorizontalAlignment="Right" Margin="0,0,75,0" Grid.Column="1" Grid.Row="0"/>
         <Button x:Name="SettingsButton" Click="SettingsButton_OnClick" Content="Settings" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="0">
             <Button.Flyout>
-                <MenuFlyout>
+                <MenuFlyout Placement="BottomEdgeAlignedRight">
                     <MenuItem Header="Themes" FlowDirection="RightToLeft">
                         <MenuItem x:Name="SystemThemeItem" Header="Follow System"/>
                         <MenuItem x:Name="LightThemeItem" Header="Light Theme"/>
