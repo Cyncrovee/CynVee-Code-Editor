@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CynVee_Code_Editor.MainWindow"
+        Title="CynVee_Code_Editor">
+    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, *">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open File..." Click="OpenFileButton_OnClick"/>
+                <MenuItem Header="_Open Folder..." Click="OpenFolderButton_OnClick"/>
+                <Separator/>
+                <MenuItem Header="_Exit" Click="Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="Cut" Click="Cut"/>
+                <MenuItem Header="Copy" Click="Copy"/>
+                <MenuItem Header="Paste" Click="Paste"/>
+                <Separator/>
+                <MenuItem Header="Clear" Click="Clear"/>
+            </MenuItem>
+        </Menu>
+        
+        <TextBlock/>
+        <Button x:Name="SaveButton" IsVisible="False" Click="SaveButton_OnClick" Content="Save" Grid.Column="0" Grid.Row="0"/>
+        <Button x:Name="LoadButton" IsVisible="False" Click="LoadButton_OnClick" Content="Load" Margin="60,0,0,0" Grid.Column="0" Grid.Row="0"/>
+        <Button x:Name="DeleteButton" IsVisible="False" Click="DeleteButton_OnClick" Content="Delete" Margin="120,0,0,0" Grid.Column="0" Grid.Row="0"/>
+        
+        <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Grid.Column="0" Grid.Row="1"/>
+        <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Grid.Column="0" Grid.Row="2"/>
+        
+        <Button x:Name="OpenFolderButton" Click="OpenFolderButton_OnClick" Content="Open Folder" HorizontalAlignment="Right" Margin="0,0,160,0" Grid.Column="1" Grid.Row="0"/>
+        <Button x:Name="OpenFileButton" Click="OpenFileButton_OnClick" Content="Open File" HorizontalAlignment="Right" Margin="0,0,75,0" Grid.Column="1" Grid.Row="0"/>
+        <Button x:Name="SettingsButton" Click="SettingsButton_OnClick" Content="Settings" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="0">
+            <Button.Flyout>
+                <MenuFlyout>
+                    <MenuItem Header="Themes" FlowDirection="RightToLeft">
+                        <MenuItem x:Name="SystemThemeItem" Header="Follow System" Click="SystemThemeItem_OnClick"/>
+                        <MenuItem x:Name="LightThemeItem" Header="Light Theme"/>
+                        <MenuItem x:Name="DarkThemeItem" Header="Dark Theme"/>
+                    </MenuItem>
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+        
+        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="3"/>
+        <ListBox x:Name="FileList" DoubleTapped="FileList_OnDoubleTapped" Grid.Column="1" Grid.Row="3"/>
+    </Grid>
+</Window>
