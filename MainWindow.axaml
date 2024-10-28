@@ -37,7 +37,7 @@
             <Button.Flyout>
                 <MenuFlyout>
                     <MenuItem Header="Themes" FlowDirection="RightToLeft">
-                        <MenuItem x:Name="SystemThemeItem" Header="Follow System" Click="SystemThemeItem_OnClick"/>
+                        <MenuItem x:Name="SystemThemeItem" Header="Follow System"/>
                         <MenuItem x:Name="LightThemeItem" Header="Light Theme"/>
                         <MenuItem x:Name="DarkThemeItem" Header="Dark Theme"/>
                     </MenuItem>
