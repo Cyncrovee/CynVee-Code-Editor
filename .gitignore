@@ -1,0 +1,11 @@
+.idea/
+[Bb]in/
+[Oo]bj/
+publish/
+
+*.suo
+*.user
+*.coverage
+*.coveragexml
+
+packages
