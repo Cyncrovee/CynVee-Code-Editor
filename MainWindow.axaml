@@ -11,8 +11,9 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
                 <MenuItem Header="Open Folder..." Click="OpenFolderButton_OnClick"/>
-                <MenuItem Header="Fetch Last Used Folder"/>
+                <MenuItem Header="Save" Click="SaveButton_OnClick"/>
                 <Separator/>
+                <MenuItem Header="Fetch Last Used Folder"/>
                 <MenuItem Header="Exit File/Folder" Click="ExitFileFolder_OnClick"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit"/>
