@@ -97,26 +97,7 @@ public partial class MainWindow : Window
             {
                 Console.WriteLine(ex.Message);
             }
-            string ext = Path.GetExtension(file.First().Path.LocalPath.ToString());
-            Console.WriteLine(ext);
-            switch (ext)
-            {
-                case ".cs":
-                    Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-                    break;
-                case ".html":
-                    Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("HTML");
-                    break;
-                case ".axaml" or ".xaml" or ".xml":
-                    Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
-                    break;
-                case ".java":
-                    Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("Java");
-                    break;
-                case ".js":
-                    Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("JavaScript");
-                    break;
-            }
+            RefreshSyntax();
         }
     }
     private async void OpenFolderButton_OnClick(object? sender, RoutedEventArgs e)
@@ -178,10 +159,36 @@ public partial class MainWindow : Window
                 Console.WriteLine(ex.Message);
             }
         }
+        RefreshSyntax();
     }
 
     private void SystemThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
         Console.WriteLine("SystemThemeItem_OnClick");
+    }
+
+    private void RefreshSyntax()
+    {
+        Console.WriteLine("RefreshSyntax");
+        string ext = Path.GetExtension(_filePath);
+        Console.WriteLine(ext);
+        switch (ext)
+        {
+            case ".cs":
+                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+                break;
+            case ".html":
+                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("HTML");
+                break;
+            case ".axaml" or ".xaml" or ".xml":
+                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
+                break;
+            case ".java":
+                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("Java");
+                break;
+            case ".js":
+                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("JavaScript");
+                break;
+        }
     }
 }
