@@ -9,8 +9,11 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.TextMate;
+using TextMateSharp.Grammars;
 
 namespace CynVee_Code_Editor;
 
@@ -19,6 +22,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        
+        var _textEditor = this.FindControl<TextEditor>("Editor");
+        
+        var  _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+        
+        var _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
     }
     
     private string _filePath;
@@ -99,7 +108,6 @@ public partial class MainWindow : Window
             {
                 Console.WriteLine(ex.Message);
             }
-            Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Path.GetExtension(_filePath));
             RefreshSyntax();
         }
     }
@@ -148,7 +156,6 @@ public partial class MainWindow : Window
                 Console.WriteLine(ex.Message);
             }
         }
-        Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Path.GetExtension(_filePath));
         RefreshSyntax();
     }
     private void RefreshList()
@@ -165,16 +172,14 @@ public partial class MainWindow : Window
             }
         }
     }
-
     private void RefreshSyntax()
     {
-        Console.WriteLine("RefreshSyntax");
-        string ext = Path.GetExtension(_filePath);
-        switch (ext)
-        {
-            case ".fxml":
-                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
-                break;
-        }
+        var _textEditor = this.FindControl<TextEditor>("Editor");
+        
+        var  _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+        
+        var _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
+        
+        _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id));
     }
 }
