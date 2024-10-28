@@ -6,11 +6,14 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CynVee_Code_Editor.MainWindow"
         Title="CynVee_Code_Editor">
-    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, *">
+    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, *">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open File..." Click="OpenFileButton_OnClick"/>
-                <MenuItem Header="_Open Folder..." Click="OpenFolderButton_OnClick"/>
+                <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
+                <MenuItem Header="Open Folder..." Click="OpenFolderButton_OnClick"/>
+                <MenuItem Header="Fetch Last Used Folder"/>
+                <Separator/>
+                <MenuItem Header="Exit File/Folder" Click="ExitFileFolder_OnClick"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
@@ -28,8 +31,9 @@
         <Button x:Name="LoadButton" IsVisible="False" Click="LoadButton_OnClick" Content="Load" Margin="60,0,0,0" Grid.Column="0" Grid.Row="0"/>
         <Button x:Name="DeleteButton" IsVisible="False" Click="DeleteButton_OnClick" Content="Delete" Margin="120,0,0,0" Grid.Column="0" Grid.Row="0"/>
         
-        <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Margin="0,5,0,5" Grid.Column="0" Grid.Row="1"/>
+        <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="1"/>
         <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="2"/>
+        <TextBlock x:Name="LanguageTextBlock" Text="Detected Language: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="3"/>
         
         <Button x:Name="OpenFolderButton" Click="OpenFolderButton_OnClick" Content="Open Folder" HorizontalAlignment="Right" Margin="0,0,160,0" Grid.Column="1" Grid.Row="0"/>
         <Button x:Name="OpenFileButton" Click="OpenFileButton_OnClick" Content="Open File" HorizontalAlignment="Right" Margin="0,0,75,0" Grid.Column="1" Grid.Row="0"/>
@@ -45,7 +49,7 @@
             </Button.Flyout>
         </Button>
         
-        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="3"/>
-        <ListBox x:Name="FileList" DoubleTapped="FileList_OnDoubleTapped" Grid.Column="1" Grid.Row="3"/>
+        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="4"/>
+        <ListBox x:Name="FileList" DoubleTapped="FileList_OnDoubleTapped" Grid.Column="1" Grid.Row="4"/>
     </Grid>
 </Window>
