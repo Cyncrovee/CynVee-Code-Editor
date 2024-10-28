@@ -22,12 +22,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        
-        var _textEditor = this.FindControl<TextEditor>("Editor");
-        
-        var  _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
-        
-        var _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
     }
     
     private string _filePath;
@@ -150,6 +144,7 @@ public partial class MainWindow : Window
                 string text = reader.ReadToEnd();
                 Editor.Text = text;
                 reader.Close();
+                FilePathBlock.Text = "Currently Selected File: " + selectedFile;
             }
             catch (Exception ex)
             {
@@ -174,12 +169,35 @@ public partial class MainWindow : Window
     }
     private void RefreshSyntax()
     {
-        var _textEditor = this.FindControl<TextEditor>("Editor");
+        try
+        {
+            var _textEditor = this.FindControl<TextEditor>("Editor");
         
-        var  _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+            var  _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
         
-        var _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
+            var _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
         
-        _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(_registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id));
+            string extension = _registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
+        
+            _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(extension));
+            LanguageTextBlock.Text = ("Detected Language: " + extension.ToUpper());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            LanguageTextBlock.Text = ("Detected Language Not Supported");
+        }
+    }
+
+    private void ExitFileFolder_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _filePath = null;
+        _folderPath = null;
+        
+        Editor.Clear();
+        FileList.Items.Clear();
+        
+        FolderPathBlock.Text = "Currently Selected Folder: ";
+        FilePathBlock.Text = "Currently Selected File: ";
     }
 }
