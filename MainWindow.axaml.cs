@@ -24,13 +24,14 @@ public partial class MainWindow : Window
     private string _filePath;
     private string _folderPath;
     
-    // MenuBar "File" functions
+    
+    // MenuBar functions
+    // "File"
     private void Exit(object? sender, RoutedEventArgs e)
     {
         this.Close();
     }
-    
-    // MenuBar "Edit" functions
+    // "Edit"
     private void Cut(object? sender, RoutedEventArgs e)
     {
         Editor.Cut();
@@ -47,7 +48,8 @@ public partial class MainWindow : Window
     {
         Editor.Clear();
     }
-
+    
+    
     // Functions for left side buttons
     private void SaveButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -97,6 +99,7 @@ public partial class MainWindow : Window
             {
                 Console.WriteLine(ex.Message);
             }
+            Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Path.GetExtension(_filePath));
             RefreshSyntax();
         }
     }
@@ -125,20 +128,6 @@ public partial class MainWindow : Window
     }
     
     // Misc functions
-    private void RefreshList()
-    {
-        Console.WriteLine("RefreshList");
-        if (_folderPath != null)
-        {
-            string[] files = Directory.GetFiles(_folderPath);
-
-            FileList.Items.Clear();
-            foreach (string file in files)
-            {
-                FileList.Items.Add(file);
-            }
-        }
-    }
     private void LoadFromList()
     {
         if (FileList.SelectedItem != null)
@@ -159,35 +148,32 @@ public partial class MainWindow : Window
                 Console.WriteLine(ex.Message);
             }
         }
+        Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(Path.GetExtension(_filePath));
         RefreshSyntax();
     }
-
-    private void SystemThemeItem_OnClick(object? sender, RoutedEventArgs e)
+    private void RefreshList()
     {
-        Console.WriteLine("SystemThemeItem_OnClick");
+        Console.WriteLine("RefreshList");
+        if (_folderPath != null)
+        {
+            string[] files = Directory.GetFiles(_folderPath);
+
+            FileList.Items.Clear();
+            foreach (string file in files)
+            {
+                FileList.Items.Add(file);
+            }
+        }
     }
 
     private void RefreshSyntax()
     {
         Console.WriteLine("RefreshSyntax");
         string ext = Path.GetExtension(_filePath);
-        Console.WriteLine(ext);
         switch (ext)
         {
-            case ".cs":
-                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-                break;
-            case ".html":
-                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("HTML");
-                break;
-            case ".axaml" or ".xaml" or ".xml":
+            case ".fxml":
                 Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
-                break;
-            case ".java":
-                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("Java");
-                break;
-            case ".js":
-                Editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("JavaScript");
                 break;
         }
     }
