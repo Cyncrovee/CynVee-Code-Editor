@@ -19,9 +19,14 @@
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="Cut" Click="Cut"/>
-                <MenuItem Header="Copy" Click="Copy"/>
-                <MenuItem Header="Paste" Click="Paste"/>
+                <MenuItem Header="Undo" InputGesture="Ctrl+Z" Click="UndoButton_OnClick"/>
+                <MenuItem Header="Redo" InputGesture="Ctrl+Y" Click="RedoButton_OnClick"/>
+                <Separator/>
+                <MenuItem Header="Select All" InputGesture="Ctrl + A" Click="SelectAll_OnClick"/>
+                <Separator/>
+                <MenuItem Header="Cut" Click="Cut" InputGesture="Ctrl + X"/>
+                <MenuItem Header="Copy" Click="Copy" InputGesture="Ctrl + C"/>
+                <MenuItem Header="Paste" Click="Paste" InputGesture="Ctrl + V"/>
                 <Separator/>
                 <MenuItem Header="Clear" Click="Clear"/>
             </MenuItem>
