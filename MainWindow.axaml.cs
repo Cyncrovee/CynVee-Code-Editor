@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -30,6 +32,17 @@ public partial class MainWindow : Window
     
     // MenuBar functions
     // "File"
+    private void ExitFileFolder_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _filePath = null;
+        _folderPath = null;
+        
+        Editor.Clear();
+        FileList.Items.Clear();
+        
+        FolderPathBlock.Text = "Currently Selected Folder: ";
+        FilePathBlock.Text = "Currently Selected File: ";
+    }
     private void Exit(object? sender, RoutedEventArgs e)
     {
         this.Close();
@@ -50,6 +63,24 @@ public partial class MainWindow : Window
     private void Clear(object? sender, RoutedEventArgs e)
     {
         Editor.Clear();
+    }
+    // "View"
+    private void ListViewButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        FileList.IsVisible = !FileList.IsVisible;
+        if (Editor.GetValue(Grid.ColumnSpanProperty) is 1)
+        {
+            Editor.SetValue(Grid.ColumnSpanProperty, 2);
+        }
+        else if (Editor.GetValue(Grid.ColumnSpanProperty) is 2)
+        {
+            Editor.SetValue(Grid.ColumnSpanProperty, 1);
+        }
+    }
+    // "Debug"
+    private void GridLinesButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        MainGrid.ShowGridLines = !MainGrid.ShowGridLines;
     }
     
     
@@ -187,17 +218,5 @@ public partial class MainWindow : Window
             Console.WriteLine(e);
             LanguageTextBlock.Text = ("Detected Language Not Supported");
         }
-    }
-
-    private void ExitFileFolder_OnClick(object? sender, RoutedEventArgs e)
-    {
-        _filePath = null;
-        _folderPath = null;
-        
-        Editor.Clear();
-        FileList.Items.Clear();
-        
-        FolderPathBlock.Text = "Currently Selected Folder: ";
-        FilePathBlock.Text = "Currently Selected File: ";
     }
 }
