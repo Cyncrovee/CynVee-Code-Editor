@@ -25,6 +25,9 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        
+        Editor.Options.HighlightCurrentLine = true;
+        Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
     
     private string _filePath;
@@ -192,7 +195,7 @@ public partial class MainWindow : Window
         LoadFromList();
     }
     
-    // Misc functions
+    // Non-Event functions
     private void LoadFromList()
     {
         if (FileList.SelectedItem != null)
@@ -250,5 +253,11 @@ public partial class MainWindow : Window
             Console.WriteLine(e);
             LanguageTextBlock.Text = ("Detected Language Not Supported");
         }
+    }
+    
+    //Misc Functions
+    private void EditorCaret_PositionChanged(object? sender, EventArgs e)
+    {
+        CurrentLineTextBlock.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column;
     }
 }
