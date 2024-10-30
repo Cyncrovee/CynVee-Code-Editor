@@ -11,7 +11,7 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
                 <MenuItem Header="Open Folder..." Click="OpenFolderButton_OnClick"/>
-                <MenuItem Header="Save" Click="SaveButton_OnClick"/>
+                <MenuItem Header="Save" InputGesture="Ctrl+S" Click="SaveButton_OnClick" HotKey="Ctrl+S"/>
                 <Separator/>
                 <MenuItem Header="Fetch Last Used Folder"/>
                 <MenuItem Header="Exit File/Folder" Click="ExitFileFolder_OnClick"/>
@@ -31,11 +31,13 @@
                 <MenuItem Header="Clear" Click="Clear"/>
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem x:Name="ListViewButton" Header="Toggle List View Visibility" Click="ListViewButton_OnClick"/>
+                <MenuItem x:Name="HighlightRowButton" Header="Highlight Current Row" Click="HighlightRowButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
+                <Separator/>
+                <MenuItem x:Name="ListViewButton" Header="Toggle List View Visibility" Click="ListViewButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
                 <MenuItem x:Name="ListMoveButton" Header="Move List Left/Right" Click="ListMoveButton_OnClick"/>
             </MenuItem>
             <MenuItem Header="Debug">
-                <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" Click="GridLinesButton_OnClick"/>
+                <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" Click="GridLinesButton_OnClick" ToggleType="CheckBox"/>
             </MenuItem>
         </Menu>
         
