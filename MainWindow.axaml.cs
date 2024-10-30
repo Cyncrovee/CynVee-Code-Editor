@@ -262,4 +262,16 @@ public partial class MainWindow : Window
         CurrentLineTextBlock.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column;
         StatusText.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column + " | ";
     }
+
+    private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Editor.Options.HighlightCurrentLine == true)
+        {
+            Editor.Options.HighlightCurrentLine = false;
+        }
+        else if (Editor.Options.HighlightCurrentLine == false)
+        {
+            Editor.Options.HighlightCurrentLine = true;
+        }
+    }
 }
