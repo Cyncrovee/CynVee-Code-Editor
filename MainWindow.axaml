@@ -63,6 +63,16 @@
         </Button>
         
         <ListBox x:Name="FileList" DoubleTapped="FileList_OnDoubleTapped" Grid.Column="1" Grid.Row="5"/>
-        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="1"/>
+        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="1">
+            <avaloniaEdit:TextEditor.ContextFlyout>
+                <MenuFlyout>
+                    <MenuItem Header="Copy" InputGesture="CTRL+C" Click="Copy"/>
+                    <MenuItem Header="Cut" InputGesture="CTRL+X" Click="Cut"/>
+                    <MenuItem Header="Paste" InputGesture="CTRL+V" Click="Paste"/>
+                    <MenuItem Header="-"/>
+                    <MenuItem Header="Select All" InputGesture="CTRL+A" Click="SelectAll_OnClick"/>
+                </MenuFlyout>
+            </avaloniaEdit:TextEditor.ContextFlyout>
+        </avaloniaEdit:TextEditor>
     </Grid>
 </Window>
