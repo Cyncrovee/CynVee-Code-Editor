@@ -122,6 +122,10 @@ public partial class MainWindow : Window
             writer.Write(Editor.Text);
             writer.Close();
         }
+        else
+        {
+            Console.WriteLine("No file selected");
+        }
     }
     private void LoadButton_OnClick(object? sender, RoutedEventArgs e)
     {
