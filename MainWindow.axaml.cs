@@ -6,6 +6,7 @@ using System.Net.Mime;
 using System.Text.RegularExpressions;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -75,6 +76,21 @@ public partial class MainWindow : Window
         else if (Editor.GetValue(Grid.ColumnSpanProperty) is 2)
         {
             Editor.SetValue(Grid.ColumnSpanProperty, 1);
+        }
+    }
+    private void ListMoveButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Editor.GetValue(Grid.ColumnProperty) is 0)
+        {
+            Editor.SetValue(Grid.ColumnProperty, 1);
+            FileList.SetValue(Grid.ColumnProperty, 0);
+            //FileList.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Right);
+        }
+        else if (Editor.GetValue(Grid.ColumnProperty) is 1)
+        {
+            Editor.SetValue(Grid.ColumnProperty, 0);
+            FileList.SetValue(Grid.ColumnProperty, 1);
+            //FileList.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Right);
         }
     }
     // "Debug"
