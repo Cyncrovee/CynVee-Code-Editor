@@ -49,6 +49,18 @@ public partial class MainWindow : Window
         this.Close();
     }
     // "Edit"
+    private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Undo();
+    }
+    private void RedoButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Redo();
+    }
+    private void SelectAll_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.SelectAll();
+    }
     private void Cut(object? sender, RoutedEventArgs e)
     {
         Editor.Cut();
