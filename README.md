@@ -9,3 +9,4 @@ A code editor made with the Avalonia UI framework
 
 ### Currently does not feature/Yet to add
 - Changing themes
+- Creating new files
