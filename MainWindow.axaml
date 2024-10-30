@@ -32,6 +32,9 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem x:Name="HighlightRowButton" Header="Highlight Current Row" Click="HighlightRowButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
+                <MenuItem x:Name="TabSpacesButton" Header="Show/Hide Tab Spaces" Click="TabSpacesButton_OnClick" ToggleType="CheckBox"/>
+                <MenuItem x:Name="ColumnRulerButton" Header="Show/Hide Column Ruler" Click="ColumnRulerButton_OnClick" ToggleType="CheckBox"/>
+                <MenuItem x:Name="EndOfLineButton" Header="Show/Hide End of Line" Click="EndOfLineButton_OnClick" ToggleType="CheckBox"/>
                 <Separator/>
                 <MenuItem x:Name="ListViewButton" Header="Toggle List View Visibility" Click="ListViewButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
                 <MenuItem x:Name="ListMoveButton" Header="Move List Left/Right" Click="ListMoveButton_OnClick"/>

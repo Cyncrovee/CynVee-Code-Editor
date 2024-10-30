@@ -26,7 +26,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         
+        Editor.Options.AllowToggleOverstrikeMode = true;
         Editor.Options.HighlightCurrentLine = true;
+        
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
     
@@ -81,6 +83,22 @@ public partial class MainWindow : Window
         Editor.Clear();
     }
     // "View"
+    private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.HighlightCurrentLine = !Editor.Options.HighlightCurrentLine;
+    }
+    private void TabSpacesButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.ShowTabs = !Editor.Options.ShowTabs;
+    }
+    private void ColumnRulerButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.ShowColumnRulers = !Editor.Options.ShowColumnRulers;
+    }
+    private void EndOfLineButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.ShowEndOfLine = !Editor.Options.ShowEndOfLine;
+    }
     private void ListViewButton_OnClick(object? sender, RoutedEventArgs e)
     {
         FileList.IsVisible = !FileList.IsVisible;
@@ -118,12 +136,12 @@ public partial class MainWindow : Window
     // Functions for left side buttons
     private void SaveButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        Console.WriteLine("SaveButton_OnClick");
         if (_filePath != null)
         {
             StreamWriter writer = new StreamWriter(_filePath);
             writer.Write(Editor.Text);
             writer.Close();
+            Console.WriteLine("File saved");
         }
         else
         {
@@ -261,17 +279,5 @@ public partial class MainWindow : Window
     {
         CurrentLineTextBlock.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column;
         StatusText.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column + " | ";
-    }
-
-    private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (Editor.Options.HighlightCurrentLine == true)
-        {
-            Editor.Options.HighlightCurrentLine = false;
-        }
-        else if (Editor.Options.HighlightCurrentLine == false)
-        {
-            Editor.Options.HighlightCurrentLine = true;
-        }
     }
 }
