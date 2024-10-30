@@ -247,6 +247,7 @@ public partial class MainWindow : Window
         
             _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(extension));
             LanguageTextBlock.Text = ("Detected Language: " + extension.ToUpper());
+            LanguageStatusText.Text= ("Language: " + extension.ToUpper());
         }
         catch (Exception e)
         {
@@ -259,5 +260,6 @@ public partial class MainWindow : Window
     private void EditorCaret_PositionChanged(object? sender, EventArgs e)
     {
         CurrentLineTextBlock.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column;
+        StatusText.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column + " | ";
     }
 }
