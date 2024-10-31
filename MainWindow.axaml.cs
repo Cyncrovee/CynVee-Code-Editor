@@ -33,7 +33,7 @@ public partial class MainWindow : Window
     {
         if (_filePath != string.Empty)
         {
-            StreamWriter writer = new StreamWriter(_filePath);
+            var writer = new StreamWriter(_filePath);
             await writer.WriteAsync(Editor.Text);
             writer.Close();
             Console.WriteLine("File saved");
@@ -45,7 +45,7 @@ public partial class MainWindow : Window
     }
     private async void SaveAsButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        var topLevel = TopLevel.GetTopLevel(this);
+        var topLevel = GetTopLevel(this);
         
         var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
@@ -58,6 +58,10 @@ public partial class MainWindow : Window
             await using var writer = new StreamWriter(stream);
             await writer.WriteAsync(Editor.Text);
             _filePath = file.Path.LocalPath;
+        }
+        else
+        {
+            Console.WriteLine("No file created");
         }
     }
     private void ExitFileFolder_OnClick(object? sender, RoutedEventArgs e)
@@ -128,28 +132,30 @@ public partial class MainWindow : Window
     private void ListViewButton_OnClick(object? sender, RoutedEventArgs e)
     {
         FileList.IsVisible = !FileList.IsVisible;
-        if (Editor.GetValue(Grid.ColumnSpanProperty) is 1)
+        switch (Editor.GetValue(Grid.ColumnSpanProperty))
         {
-            Editor.SetValue(Grid.ColumnSpanProperty, 2);
-        }
-        else if (Editor.GetValue(Grid.ColumnSpanProperty) is 2)
-        {
-            Editor.SetValue(Grid.ColumnSpanProperty, 1);
+            case 1:
+                Editor.SetValue(Grid.ColumnSpanProperty, 2);
+                break;
+            case 2:
+                Editor.SetValue(Grid.ColumnSpanProperty, 1);
+                break;
         }
     }
     private void ListMoveButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (Editor.GetValue(Grid.ColumnProperty) is 0)
+        switch (Editor.GetValue(Grid.ColumnProperty))
         {
-            Editor.SetValue(Grid.ColumnProperty, 1);
-            FileList.SetValue(Grid.ColumnProperty, 0);
-            //FileList.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Right);
-        }
-        else if (Editor.GetValue(Grid.ColumnProperty) is 1)
-        {
-            Editor.SetValue(Grid.ColumnProperty, 0);
-            FileList.SetValue(Grid.ColumnProperty, 1);
-            //FileList.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Right);
+            case 0:
+                Editor.SetValue(Grid.ColumnProperty, 1);
+                FileList.SetValue(Grid.ColumnProperty, 0);
+                //FileList.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Right);
+                break;
+            case 1:
+                Editor.SetValue(Grid.ColumnProperty, 0);
+                FileList.SetValue(Grid.ColumnProperty, 1);
+                //FileList.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Right);
+                break;
         }
     }
     // "Debug"
@@ -178,7 +184,7 @@ public partial class MainWindow : Window
             try
             {
                 using StreamReader reader = new(selectedFile);
-                string text = reader.ReadToEnd();
+                var text = reader.ReadToEndAsync().Result;
                 Editor.Text = text;
             }
             catch (Exception ex)
@@ -203,7 +209,7 @@ public partial class MainWindow : Window
 
         if (folder.Count >= 1)
         {
-            _folderPath = folder.First().Path.LocalPath;
+            _folderPath = folder[0].Path.LocalPath;
             FolderPathBlock.Text = "Currently Selected File: " + _folderPath;
             RefreshList();
         }
@@ -228,14 +234,14 @@ public partial class MainWindow : Window
     {
         if (FileList.SelectedItem != null)
         {
-            string selectedFile = FileList.SelectedItem.ToString();
+            var selectedFile = FileList.SelectedItem.ToString();
             _filePath = selectedFile;
             Editor.Clear();
 
             try
             {
                 using StreamReader reader = new(selectedFile);
-                string text = reader.ReadToEnd();
+                var text = reader.ReadToEnd();
                 Editor.Text = text;
                 reader.Close();
                 FilePathBlock.Text = "Currently Selected File: " + selectedFile;
@@ -244,6 +250,10 @@ public partial class MainWindow : Window
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+        else
+        {
+            Console.WriteLine("No file selected");
         }
         RefreshSyntax();
     }
@@ -259,6 +269,10 @@ public partial class MainWindow : Window
             {
                 FileList.Items.Add(file);
             }
+        }
+        else
+        {
+            Console.WriteLine("No folder selected");
         }
     }
     private void RefreshSyntax()
