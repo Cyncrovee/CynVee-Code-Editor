@@ -12,6 +12,7 @@
                 <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
                 <MenuItem Header="Open Folder..." Click="OpenFolderButton_OnClick"/>
                 <MenuItem Header="Save" InputGesture="Ctrl+S" Click="SaveButton_OnClick" HotKey="Ctrl+S"/>
+                <MenuItem x:Name="SaveAsButton" Header="Save As..." InputGesture="Ctrl+Shift+S" Click="SaveAsButton_OnClick" HotKey="Ctrl+Shift+S"/>
                 <Separator/>
                 <MenuItem Header="Fetch Last Used Folder"/>
                 <MenuItem Header="Exit File/Folder" Click="ExitFileFolder_OnClick"/>
@@ -44,10 +45,6 @@
                 <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" Click="GridLinesButton_OnClick" ToggleType="CheckBox"/>
             </MenuItem>
         </Menu>
-        
-        <Button x:Name="SaveButton" IsVisible="False" Click="SaveButton_OnClick" Content="Save" Grid.Column="0" Grid.Row="0"/>
-        <Button x:Name="LoadButton" IsVisible="False" Click="LoadButton_OnClick" Content="Load" Margin="60,0,0,0" Grid.Column="0" Grid.Row="0"/>
-        <Button x:Name="DeleteButton" IsVisible="False" Click="DeleteButton_OnClick" Content="Delete" Margin="120,0,0,0" Grid.Column="0" Grid.Row="0"/>
         
         <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="1"/>
         <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="2"/>

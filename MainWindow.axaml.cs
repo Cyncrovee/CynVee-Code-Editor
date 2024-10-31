@@ -1,20 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using System.Text.RegularExpressions;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
-using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using AvaloniaEdit;
-using AvaloniaEdit.Document;
-using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.TextMate;
 using TextMateSharp.Grammars;
 
@@ -32,16 +23,47 @@ public partial class MainWindow : Window
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
     
-    private string _filePath;
-    private string _folderPath;
+    private string _filePath = string.Empty;
+    private string _folderPath = string.Empty;
     
     
     // MenuBar functions
     // "File"
+    private async void SaveButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_filePath != string.Empty)
+        {
+            StreamWriter writer = new StreamWriter(_filePath);
+            await writer.WriteAsync(Editor.Text);
+            writer.Close();
+            Console.WriteLine("File saved");
+        }
+        else
+        {
+            Console.WriteLine("No file selected");
+        }
+    }
+    private async void SaveAsButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(this);
+        
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Save File"
+        });
+
+        if (file is not null)
+        {
+            await using var stream = await file.OpenWriteAsync();
+            await using var writer = new StreamWriter(stream);
+            await writer.WriteAsync(Editor.Text);
+            _filePath = file.Path.LocalPath;
+        }
+    }
     private void ExitFileFolder_OnClick(object? sender, RoutedEventArgs e)
     {
-        _filePath = null;
-        _folderPath = null;
+        _filePath = string.Empty;
+        _folderPath = string.Empty;
         
         Editor.Clear();
         FileList.Items.Clear();
@@ -135,37 +157,10 @@ public partial class MainWindow : Window
     {
         MainGrid.ShowGridLines = !MainGrid.ShowGridLines;
     }
-    
-    
-    // Functions for left side buttons
-    private void SaveButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (_filePath != null)
-        {
-            StreamWriter writer = new StreamWriter(_filePath);
-            writer.Write(Editor.Text);
-            writer.Close();
-            Console.WriteLine("File saved");
-        }
-        else
-        {
-            Console.WriteLine("No file selected");
-        }
-    }
-    private void LoadButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        Console.WriteLine("LoadButton_OnClick");
-        LoadFromList();
-    }
-    private void DeleteButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        Console.WriteLine("DeleteButton_OnClick");
-    }
 
     // Functions for right side buttons
     private async void OpenFileButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        Console.WriteLine("OpenFileButton_OnClick");
         var topLevel = TopLevel.GetTopLevel(this);
         var file = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
@@ -178,7 +173,7 @@ public partial class MainWindow : Window
             _filePath = file.First().Path.LocalPath;
             FilePathBlock.Text = "Currently Selected File: " + _filePath;
             
-            string selectedFile = _filePath.ToString();
+            string selectedFile = _filePath;
             Editor.Clear();
             try
             {
@@ -192,19 +187,30 @@ public partial class MainWindow : Window
             }
             RefreshSyntax();
         }
+        else
+        {
+            Console.WriteLine("No file selected");
+        }
     }
     private async void OpenFolderButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        Console.WriteLine("OpenFolderButton_OnClick");
         var topLevel = TopLevel.GetTopLevel(this);
         var folder = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
             Title = "Open Folder",
             AllowMultiple = false
         });
-        _folderPath = folder.First().Path.LocalPath;
-        FolderPathBlock.Text = "Currently Selected File: " + _folderPath;
-        RefreshList();
+
+        if (folder.Count >= 1)
+        {
+            _folderPath = folder.First().Path.LocalPath;
+            FolderPathBlock.Text = "Currently Selected File: " + _folderPath;
+            RefreshList();
+        }
+        else
+        {
+            Console.WriteLine("No folder selected");
+        }
     }
     private void SettingsButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -212,7 +218,7 @@ public partial class MainWindow : Window
     }
 
     // Functions for Editor and FileList
-    private async void FileList_OnDoubleTapped(object? sender, TappedEventArgs e)
+    private void FileList_OnDoubleTapped(object? sender, TappedEventArgs e)
     {
         LoadFromList();
     }
@@ -244,7 +250,7 @@ public partial class MainWindow : Window
     private void RefreshList()
     {
         Console.WriteLine("RefreshList");
-        if (_folderPath != null)
+        if (_folderPath != string.Empty)
         {
             string[] files = Directory.GetFiles(_folderPath);
 
@@ -259,15 +265,15 @@ public partial class MainWindow : Window
     {
         try
         {
-            var _textEditor = this.FindControl<TextEditor>("Editor");
+            var textEditor = this.FindControl<TextEditor>("Editor");
         
-            var  _registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+            var  registryOptions = new RegistryOptions(ThemeName.DarkPlus);
         
-            var _textMateInstallation = _textEditor.InstallTextMate(_registryOptions);
+            var textMateInstallation = textEditor.InstallTextMate(registryOptions);
         
-            string extension = _registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
+            string extension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
         
-            _textMateInstallation.SetGrammar(_registryOptions.GetScopeByLanguageId(extension));
+            textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(extension));
             LanguageTextBlock.Text = ("Detected Language: " + extension.ToUpper());
             LanguageStatusText.Text= ("Language: " + extension.ToUpper());
         }
