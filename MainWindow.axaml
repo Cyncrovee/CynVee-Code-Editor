@@ -32,6 +32,7 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem x:Name="HighlightRowButton" Header="Highlight Current Row" Click="HighlightRowButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
+                <MenuItem x:Name="SpacesButton" Header="Show/Hide Spaces" Click="SpacesButton_OnClick" ToggleType="CheckBox"/>
                 <MenuItem x:Name="TabSpacesButton" Header="Show/Hide Tab Spaces" Click="TabSpacesButton_OnClick" ToggleType="CheckBox"/>
                 <MenuItem x:Name="ColumnRulerButton" Header="Show/Hide Column Ruler" Click="ColumnRulerButton_OnClick" ToggleType="CheckBox"/>
                 <MenuItem x:Name="EndOfLineButton" Header="Show/Hide End of Line" Click="EndOfLineButton_OnClick" ToggleType="CheckBox"/>
@@ -71,8 +72,8 @@
         <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="1">
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
-                    <MenuItem Header="Copy" InputGesture="CTRL+C" Click="Copy"/>
                     <MenuItem Header="Cut" InputGesture="CTRL+X" Click="Cut"/>
+                    <MenuItem Header="Copy" InputGesture="CTRL+C" Click="Copy"/>
                     <MenuItem Header="Paste" InputGesture="CTRL+V" Click="Paste"/>
                     <MenuItem Header="-"/>
                     <MenuItem Header="Select All" InputGesture="CTRL+A" Click="SelectAll_OnClick"/>
