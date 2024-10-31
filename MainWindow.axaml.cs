@@ -87,6 +87,10 @@ public partial class MainWindow : Window
     {
         Editor.Options.HighlightCurrentLine = !Editor.Options.HighlightCurrentLine;
     }
+    private void SpacesButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.ShowSpaces = !Editor.Options.ShowSpaces;
+    }
     private void TabSpacesButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.ShowTabs = !Editor.Options.ShowTabs;
