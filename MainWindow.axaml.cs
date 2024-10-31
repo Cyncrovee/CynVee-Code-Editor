@@ -58,6 +58,7 @@ public partial class MainWindow : Window
             await using var writer = new StreamWriter(stream);
             await writer.WriteAsync(Editor.Text);
             _filePath = file.Path.LocalPath;
+            RefreshFileInformation();
         }
         else
         {
@@ -203,7 +204,7 @@ public partial class MainWindow : Window
             {
                 Console.WriteLine(ex.Message);
             }
-            RefreshSyntax();
+            RefreshFileInformation();
         }
         else
         {
@@ -267,11 +268,10 @@ public partial class MainWindow : Window
         {
             Console.WriteLine("No file selected");
         }
-        RefreshSyntax();
+        RefreshFileInformation();
     }
     private void RefreshList()
     {
-        Console.WriteLine("RefreshList");
         if (_folderPath != string.Empty)
         {
             string[] files = Directory.GetFiles(_folderPath);
@@ -287,7 +287,7 @@ public partial class MainWindow : Window
             Console.WriteLine("No folder selected");
         }
     }
-    private void RefreshSyntax()
+    private void RefreshFileInformation()
     {
         try
         {
@@ -297,15 +297,18 @@ public partial class MainWindow : Window
         
             var textMateInstallation = textEditor.InstallTextMate(registryOptions);
         
-            string extension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
+            string languageExtension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
         
-            textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(extension));
-            LanguageStatusText.Text= ("Language: " + extension.ToUpper());
+            textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(languageExtension));
+            LanguageStatusText.Text= ("Language: " + languageExtension.ToUpper());
         }
-        catch (Exception e)
+        catch (Exception)
         {
+            LanguageStatusText.Text= ("Language: " + "Not a Programming Language/Language Not Supported");
             Console.WriteLine("Not a Programming Language/Language Not Supported");
         }
+        var fileExtension = Path.GetExtension(_filePath);
+        FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
     }
     
     //Misc Functions
