@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CynVee_Code_Editor.MainWindow"
         Title="CynVee_Code_Editor">
-    <Grid x:Name="MainGrid" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, *, Auto">
+    <Grid x:Name="MainGrid" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, *, Auto">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
@@ -33,6 +33,7 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem x:Name="HighlightRowButton" Header="Highlight Current Row" Click="HighlightRowButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
+                <Separator/>
                 <MenuItem x:Name="SpacesButton" Header="Show/Hide Spaces" Click="SpacesButton_OnClick" ToggleType="CheckBox"/>
                 <MenuItem x:Name="TabSpacesButton" Header="Show/Hide Tab Spaces" Click="TabSpacesButton_OnClick" ToggleType="CheckBox"/>
                 <MenuItem x:Name="ColumnRulerButton" Header="Show/Hide Column Ruler" Click="ColumnRulerButton_OnClick" ToggleType="CheckBox"/>
@@ -40,6 +41,8 @@
                 <Separator/>
                 <MenuItem x:Name="ListViewButton" Header="Toggle List View Visibility" Click="ListViewButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
                 <MenuItem x:Name="ListMoveButton" Header="Move List Left/Right" Click="ListMoveButton_OnClick"/>
+                <Separator/>
+                <MenuItem x:Name="MoveStatusBarButton" Header="Move Status Bar Up/Down" Click="MoveStatusBarButton_OnClick"/>
             </MenuItem>
             <MenuItem Header="Debug">
                 <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" Click="GridLinesButton_OnClick" ToggleType="CheckBox"/>
@@ -48,8 +51,6 @@
         
         <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="1"/>
         <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="2"/>
-        <TextBlock x:Name="LanguageTextBlock" IsVisible="False" Text="Detected Language: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="3"/>
-        <TextBlock x:Name="CurrentLineTextBlock" IsVisible="False" Text="Line: , Column: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="4"/>
         
         <Button x:Name="OpenFolderButton" Click="OpenFolderButton_OnClick" Content="Open Folder" HorizontalAlignment="Right" Margin="0,0,160,0" Grid.Column="1" Grid.Row="0"/>
         <Button x:Name="OpenFileButton" Click="OpenFileButton_OnClick" Content="Open File" HorizontalAlignment="Right" Margin="0,0,75,0" Grid.Column="1" Grid.Row="0"/>
@@ -65,8 +66,8 @@
             </Button.Flyout>
         </Button>
         
-        <ListBox x:Name="FileList" DoubleTapped="FileList_OnDoubleTapped" Grid.Column="1" Grid.Row="5" Grid.RowSpan="2"/>
-        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="1">
+        <ListBox x:Name="FileList" DoubleTapped="FileList_OnDoubleTapped" Grid.Column="1" Grid.Row="4" Grid.RowSpan="2"/>
+        <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1">
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
                     <MenuItem Header="Cut" InputGesture="CTRL+X" Click="Cut"/>
@@ -77,7 +78,7 @@
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>
         </avaloniaEdit:TextEditor>
-        <StackPanel x:Name="StatusBar" Background="DimGray" Height="25" DockPanel.Dock="Bottom" Orientation="Horizontal" Grid.Column="0" Grid.Row="6">
+        <StackPanel x:Name="StatusBar" Background="DimGray" Height="25" DockPanel.Dock="Bottom" Orientation="Horizontal" Grid.Column="0" Grid.Row="5">
             <TextBlock x:Name="StatusText" Text="Line: Column: | " Margin="5 0 0 0" VerticalAlignment="Center" FontSize="12"/>
             <TextBlock x:Name="LanguageStatusText" Text="Language: " Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/>
         </StackPanel>

@@ -158,6 +158,18 @@ public partial class MainWindow : Window
                 break;
         }
     }
+    private void MoveStatusBarButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        switch (StatusBar.GetValue(Grid.RowProperty))
+        {
+            case 5:
+                StatusBar.SetValue(Grid.RowProperty, 3);
+                break;
+            case 3:
+                StatusBar.SetValue(Grid.RowProperty, 5);
+                break;
+        }
+    }
     // "Debug"
     private void GridLinesButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -288,20 +300,17 @@ public partial class MainWindow : Window
             string extension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
         
             textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(extension));
-            LanguageTextBlock.Text = ("Detected Language: " + extension.ToUpper());
             LanguageStatusText.Text= ("Language: " + extension.ToUpper());
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            LanguageTextBlock.Text = ("Detected Language Not Supported");
+            Console.WriteLine("Not a Programming Language/Language Not Supported");
         }
     }
     
     //Misc Functions
     private void EditorCaret_PositionChanged(object? sender, EventArgs e)
     {
-        CurrentLineTextBlock.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column;
         StatusText.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column + " | ";
     }
 }
