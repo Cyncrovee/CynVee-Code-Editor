@@ -11,8 +11,8 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
                 <MenuItem Header="Open Folder..." Click="OpenFolderButton_OnClick"/>
-                <MenuItem Header="Save" InputGesture="Ctrl+S" Click="SaveButton_OnClick" HotKey="Ctrl+S"/>
-                <MenuItem x:Name="SaveAsButton" Header="Save As..." InputGesture="Ctrl+Shift+S" Click="SaveAsButton_OnClick" HotKey="Ctrl+Shift+S"/>
+                <MenuItem Header="Save" Click="SaveButton_OnClick" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
+                <MenuItem x:Name="SaveAsButton" Header="Save As..." Click="SaveAsButton_OnClick" InputGesture="Ctrl+Shift+S" HotKey="Ctrl+Shift+S"/>
                 <Separator/>
                 <MenuItem Header="Fetch Last Used Folder"/>
                 <MenuItem Header="Exit File/Folder" Click="ExitFileFolder_OnClick"/>
@@ -20,10 +20,10 @@
                 <MenuItem Header="_Exit" Click="Exit"/>
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="Undo" InputGesture="Ctrl+Z" Click="UndoButton_OnClick"/>
-                <MenuItem Header="Redo" InputGesture="Ctrl+Y" Click="RedoButton_OnClick"/>
+                <MenuItem Header="Undo" Click="UndoButton_OnClick" InputGesture="Ctrl+Z"/>
+                <MenuItem Header="Redo" Click="RedoButton_OnClick" InputGesture="Ctrl+Y"/>
                 <Separator/>
-                <MenuItem Header="Select All" InputGesture="Ctrl + A" Click="SelectAll_OnClick"/>
+                <MenuItem Header="Select All" Click="SelectAll_OnClick" InputGesture="Ctrl + A"/>
                 <Separator/>
                 <MenuItem Header="Cut" Click="Cut" InputGesture="Ctrl + X"/>
                 <MenuItem Header="Copy" Click="Copy" InputGesture="Ctrl + C"/>
@@ -52,15 +52,15 @@
         <TextBlock x:Name="FolderPathBlock" Text="Currently Selected Folder: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="1"/>
         <TextBlock x:Name="FilePathBlock" Text="Currently Selected File: " Margin="0,0,0,5" Grid.Column="0" Grid.Row="2"/>
         
-        <Button x:Name="OpenFolderButton" Click="OpenFolderButton_OnClick" Content="Open Folder" HorizontalAlignment="Right" Margin="0,0,160,0" Grid.Column="1" Grid.Row="0"/>
+        <Button x:Name="OpenFolderButton" Click="OpenFolderButton_OnClick" Content="Open Folder" HorizontalAlignment="Right" Margin="0,0,158,0" Grid.Column="1" Grid.Row="0"/>
         <Button x:Name="OpenFileButton" Click="OpenFileButton_OnClick" Content="Open File" HorizontalAlignment="Right" Margin="0,0,75,0" Grid.Column="1" Grid.Row="0"/>
-        <Button x:Name="SettingsButton" Click="SettingsButton_OnClick" Content="Settings" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="0">
+        <Button x:Name="SettingsButton" Content="Settings" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="0">
             <Button.Flyout>
                 <MenuFlyout Placement="BottomEdgeAlignedRight">
                     <MenuItem Header="Themes" FlowDirection="RightToLeft">
-                        <MenuItem x:Name="SystemThemeItem" Header="Follow System"/>
-                        <MenuItem x:Name="LightThemeItem" Header="Light Theme"/>
-                        <MenuItem x:Name="DarkThemeItem" Header="Dark Theme"/>
+                        <MenuItem x:Name="SystemThemeItem" Header="Follow System" Click="SystemThemeItem_OnClick"/>
+                        <MenuItem x:Name="LightThemeItem" Header="Light Theme" Click="LightThemeItem_OnClick"/>
+                        <MenuItem x:Name="DarkThemeItem" Header="Dark Theme" Click="DarkThemeItem_OnClick"/>
                     </MenuItem>
                 </MenuFlyout>
             </Button.Flyout>

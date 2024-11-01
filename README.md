@@ -7,6 +7,7 @@ A code editor made with the Avalonia UI framework
 - Creating new files
 - Basic syntax highlighting
 - Opening a folder as a workspace
+- Changing themes
 
 ### Currently does not feature/Yet to add
-- Changing themes
+- Better support for user settings

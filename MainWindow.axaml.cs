@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Styling;
 using AvaloniaEdit;
 using AvaloniaEdit.TextMate;
 using TextMateSharp.Grammars;
@@ -15,13 +16,41 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        var settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt";
+        var themeSetting = File.ReadLines(settingsFile).First();
+        switch (themeSetting)
+        {
+            case "FollowSystem":
+                RequestedThemeVariant = ThemeVariant.Default;
+                break;
+            case "Light":
+                RequestedThemeVariant = ThemeVariant.Light;
+                break;
+            case "Dark":
+                RequestedThemeVariant = ThemeVariant.Dark;
+                break;
+        }
+
         InitializeComponent();
+        
+        if (File.Exists(Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt"))
+        {
+            Console.WriteLine("Settings file found");
+            Console.WriteLine(Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt");
+        }
+        else
+        {
+            Console.WriteLine("No settings file found, creating a new one...");
+            File.Create(Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt");
+        }
         
         Editor.Options.AllowToggleOverstrikeMode = true;
         Editor.Options.HighlightCurrentLine = true;
         
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
+    
+    private readonly string _settingsFilePath = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt";
     
     private string _filePath = string.Empty;
     private string _folderPath = string.Empty;
@@ -231,9 +260,44 @@ public partial class MainWindow : Window
             Console.WriteLine("No folder selected");
         }
     }
-    private void SettingsButton_OnClick(object? sender, RoutedEventArgs e)
+    private async void SystemThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
-        Console.WriteLine("SettingsButton_OnClick");
+        RequestedThemeVariant = ThemeVariant.Default;
+        
+        FileStream fileStream = File.Open(_settingsFilePath, FileMode.Open);
+        fileStream.SetLength(0);
+        fileStream.Close();
+        
+        var streamWriter = new StreamWriter(_settingsFilePath);
+        await streamWriter.WriteAsync("FollowSystem");
+        streamWriter.Close();
+        Console.WriteLine("Settings file saved");
+    }
+    private async void LightThemeItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        RequestedThemeVariant = ThemeVariant.Light;
+        
+        FileStream fileStream = File.Open(_settingsFilePath, FileMode.Open);
+        fileStream.SetLength(0);
+        fileStream.Close();
+        
+        var streamWriter = new StreamWriter(_settingsFilePath);
+        await streamWriter.WriteAsync("Light");
+        streamWriter.Close();
+        Console.WriteLine("Settings file saved");
+    }
+    private async void DarkThemeItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        RequestedThemeVariant = ThemeVariant.Dark;
+        
+        FileStream fileStream = File.Open(_settingsFilePath, FileMode.Open);
+        fileStream.SetLength(0);
+        fileStream.Close();
+        
+        var streamWriter = new StreamWriter(_settingsFilePath);
+        await streamWriter.WriteAsync("FollowSystem");
+        streamWriter.Close();
+        Console.WriteLine("Settings file saved");
     }
 
     // Functions for Editor and FileList
