@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -14,44 +15,47 @@ namespace CynVee_Code_Editor;
 
 public partial class MainWindow : Window
 {
+    public class UserSettings
+    {
+        public string? ThemeSetting { get; set; }
+    }
     public MainWindow()
     {
-        var settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt";
-        var themeSetting = File.ReadLines(settingsFile).First();
-        switch (themeSetting)
-        {
-            case "FollowSystem":
-                RequestedThemeVariant = ThemeVariant.Default;
-                break;
-            case "Light":
-                RequestedThemeVariant = ThemeVariant.Light;
-                break;
-            case "Dark":
-                RequestedThemeVariant = ThemeVariant.Dark;
-                break;
-        }
-
         InitializeComponent();
+
+        var settingsFilePath = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
         
-        if (File.Exists(Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt"))
+        if (File.Exists(settingsFilePath))
         {
             Console.WriteLine("Settings file found");
-            Console.WriteLine(Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt");
+            Console.WriteLine(settingsFilePath);
+            
         }
         else
         {
             Console.WriteLine("No settings file found, creating a new one...");
-            File.Create(Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt");
+            using FileStream fileStream = File.Open(settingsFilePath, FileMode.Append);
+            using StreamWriter file = new StreamWriter(fileStream);
+            file.Close();
+            var themeSetting = new UserSettings
+            {
+                ThemeSetting = "Default"
+            };
+            var jsonString = JsonSerializer.Serialize(themeSetting);
+            var writer = new StreamWriter(_settingsFile);
+            writer.Write(jsonString);
+            writer.Close();
         }
+        
+        RefreshThemeSetting();
         
         Editor.Options.AllowToggleOverstrikeMode = true;
         Editor.Options.HighlightCurrentLine = true;
-        
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
     
-    private readonly string _settingsFilePath = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.txt";
     
+    private readonly string _settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
     private string _filePath = string.Empty;
     private string _folderPath = string.Empty;
     
@@ -206,6 +210,7 @@ public partial class MainWindow : Window
         MainGrid.ShowGridLines = !MainGrid.ShowGridLines;
     }
 
+    
     // Functions for right side buttons
     private async void OpenFileButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -260,53 +265,79 @@ public partial class MainWindow : Window
             Console.WriteLine("No folder selected");
         }
     }
-    private async void SystemThemeItem_OnClick(object? sender, RoutedEventArgs e)
+    private void SystemThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
         RequestedThemeVariant = ThemeVariant.Default;
-        
-        FileStream fileStream = File.Open(_settingsFilePath, FileMode.Open);
-        fileStream.SetLength(0);
-        fileStream.Close();
-        
-        var streamWriter = new StreamWriter(_settingsFilePath);
-        await streamWriter.WriteAsync("FollowSystem");
-        streamWriter.Close();
-        Console.WriteLine("Settings file saved");
+        RefreshFileInformation();
+        var themeSetting = new UserSettings
+        {
+            ThemeSetting = "Default"
+        };
+        var jsonString = JsonSerializer.Serialize(themeSetting);
+        var writer = new StreamWriter(_settingsFile);
+        writer.Write(jsonString);
+        writer.Close();
     }
-    private async void LightThemeItem_OnClick(object? sender, RoutedEventArgs e)
+    private void LightThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
         RequestedThemeVariant = ThemeVariant.Light;
-        
-        FileStream fileStream = File.Open(_settingsFilePath, FileMode.Open);
-        fileStream.SetLength(0);
-        fileStream.Close();
-        
-        var streamWriter = new StreamWriter(_settingsFilePath);
-        await streamWriter.WriteAsync("Light");
-        streamWriter.Close();
-        Console.WriteLine("Settings file saved");
+        RefreshFileInformation();
+        var themeSetting = new UserSettings
+        {
+            ThemeSetting = "Light"
+        };
+        var jsonString = JsonSerializer.Serialize(themeSetting);
+        var writer = new StreamWriter(_settingsFile);
+        writer.Write(jsonString);
+        writer.Close();
     }
-    private async void DarkThemeItem_OnClick(object? sender, RoutedEventArgs e)
+    private void DarkThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
         RequestedThemeVariant = ThemeVariant.Dark;
-        
-        FileStream fileStream = File.Open(_settingsFilePath, FileMode.Open);
-        fileStream.SetLength(0);
-        fileStream.Close();
-        
-        var streamWriter = new StreamWriter(_settingsFilePath);
-        await streamWriter.WriteAsync("FollowSystem");
-        streamWriter.Close();
-        Console.WriteLine("Settings file saved");
+        RefreshFileInformation();
+        var themeSetting = new UserSettings
+        {
+            ThemeSetting = "Dark"
+        };
+        var jsonString = JsonSerializer.Serialize(themeSetting);
+        var writer = new StreamWriter(_settingsFile);
+        writer.Write(jsonString);
+        writer.Close();
     }
 
+    
     // Functions for Editor and FileList
+    private void EditorCaret_PositionChanged(object? sender, EventArgs e)
+    {
+        StatusText.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column + " | ";
+    }
     private void FileList_OnDoubleTapped(object? sender, TappedEventArgs e)
     {
         LoadFromList();
     }
     
+    
     // Non-Event functions
+    private void RefreshThemeSetting()
+    {
+        var jsonString = File.ReadAllText(_settingsFile);
+        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
+        switch (userSettings.ThemeSetting)
+        {
+            case null:
+                RequestedThemeVariant = ThemeVariant.Default;
+                break;
+            case "Default":
+                RequestedThemeVariant = ThemeVariant.Default;
+                break;
+            case "Light":
+                RequestedThemeVariant = ThemeVariant.Light;
+                break;
+            case "Dark":
+                RequestedThemeVariant = ThemeVariant.Dark;
+                break;
+        }
+    }
     private void LoadFromList()
     {
         if (FileList.SelectedItem != null)
@@ -355,16 +386,36 @@ public partial class MainWindow : Window
     {
         try
         {
-            var textEditor = this.FindControl<TextEditor>("Editor");
+            if (ActualThemeVariant == ThemeVariant.Default)
+            {
+                var textEditor = this.FindControl<TextEditor>("Editor");
+                var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+                var textMateInstallation = textEditor.InstallTextMate(registryOptions);
+                string languageExtension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
         
-            var  registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+                textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(languageExtension));
+                LanguageStatusText.Text= ("Language: " + languageExtension.ToUpper());
+            }
+            else if (ActualThemeVariant == ThemeVariant.Light)
+            {
+                var textEditor = this.FindControl<TextEditor>("Editor");
+                var registryOptions = new RegistryOptions(ThemeName.LightPlus);
+                var textMateInstallation = textEditor.InstallTextMate(registryOptions);
+                string languageExtension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
         
-            var textMateInstallation = textEditor.InstallTextMate(registryOptions);
+                textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(languageExtension));
+                LanguageStatusText.Text= ("Language: " + languageExtension.ToUpper());
+            }
+            else if (ActualThemeVariant == ThemeVariant.Dark)
+            {
+                var textEditor = this.FindControl<TextEditor>("Editor");
+                var registryOptions = new RegistryOptions(ThemeName.DarkPlus);
+                var textMateInstallation = textEditor.InstallTextMate(registryOptions);
+                string languageExtension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
         
-            string languageExtension = registryOptions.GetLanguageByExtension(Path.GetExtension(_filePath)).Id;
-        
-            textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(languageExtension));
-            LanguageStatusText.Text= ("Language: " + languageExtension.ToUpper());
+                textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(languageExtension));
+                LanguageStatusText.Text= ("Language: " + languageExtension.ToUpper());
+            }
         }
         catch (Exception)
         {
@@ -373,11 +424,5 @@ public partial class MainWindow : Window
         }
         var fileExtension = Path.GetExtension(_filePath);
         FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
-    }
-    
-    //Misc Functions
-    private void EditorCaret_PositionChanged(object? sender, EventArgs e)
-    {
-        StatusText.Text = "Line: " + Editor.TextArea.Caret.Line + ", Column: " + Editor.TextArea.Caret.Column + " | ";
     }
 }
