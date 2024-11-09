@@ -541,7 +541,7 @@ public partial class MainWindow : Window
             var selectedFile = FileList.SelectedItem.ToString();
             _filePath = selectedFile;
             Editor.Clear();
-
+            
             try
             {
                 using StreamReader reader = new(selectedFile);

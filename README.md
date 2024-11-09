@@ -8,6 +8,7 @@ A code editor made with the Avalonia UI framework
 - Basic syntax highlighting
 - Opening a folder as a workspace
 - Changing themes
+- Better support for user settings
 
 ### Currently does not feature/Yet to add
-- Better support for user settings
+- Opening folders within FileList
