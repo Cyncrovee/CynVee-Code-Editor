@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -18,6 +19,8 @@ public partial class MainWindow : Window
     public class UserSettings
     {
         public string? ThemeSetting { get; set; }
+        public bool? RowHighlightSetting { get; set; }
+        public bool? GridLinesSetting { get; set; }
     }
     public MainWindow()
     {
@@ -39,7 +42,8 @@ public partial class MainWindow : Window
             file.Close();
             var themeSetting = new UserSettings
             {
-                ThemeSetting = "Default"
+                ThemeSetting = "Default",
+                RowHighlightSetting = true
             };
             var jsonString = JsonSerializer.Serialize(themeSetting);
             var writer = new StreamWriter(_settingsFile);
@@ -47,13 +51,12 @@ public partial class MainWindow : Window
             writer.Close();
         }
         
-        RefreshThemeSetting();
+        RefreshSettings();
+        RefreshIsChecked();
         
         Editor.Options.AllowToggleOverstrikeMode = true;
-        Editor.Options.HighlightCurrentLine = true;
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
-    
     
     private readonly string _settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
     private string _filePath = string.Empty;
@@ -112,6 +115,7 @@ public partial class MainWindow : Window
     private void Exit(object? sender, RoutedEventArgs e)
     {
         this.Close();
+        SaveSettings();
     }
     // "Edit"
     private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
@@ -146,6 +150,7 @@ public partial class MainWindow : Window
     private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.HighlightCurrentLine = !Editor.Options.HighlightCurrentLine;
+        SaveSettings();
     }
     private void SpacesButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -208,6 +213,7 @@ public partial class MainWindow : Window
     private void GridLinesButton_OnClick(object? sender, RoutedEventArgs e)
     {
         MainGrid.ShowGridLines = !MainGrid.ShowGridLines;
+        SaveSettings();
     }
 
     
@@ -269,40 +275,19 @@ public partial class MainWindow : Window
     {
         RequestedThemeVariant = ThemeVariant.Default;
         RefreshFileInformation();
-        var themeSetting = new UserSettings
-        {
-            ThemeSetting = "Default"
-        };
-        var jsonString = JsonSerializer.Serialize(themeSetting);
-        var writer = new StreamWriter(_settingsFile);
-        writer.Write(jsonString);
-        writer.Close();
+        SaveSettings();
     }
     private void LightThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
         RequestedThemeVariant = ThemeVariant.Light;
         RefreshFileInformation();
-        var themeSetting = new UserSettings
-        {
-            ThemeSetting = "Light"
-        };
-        var jsonString = JsonSerializer.Serialize(themeSetting);
-        var writer = new StreamWriter(_settingsFile);
-        writer.Write(jsonString);
-        writer.Close();
+        SaveSettings();
     }
     private void DarkThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
         RequestedThemeVariant = ThemeVariant.Dark;
         RefreshFileInformation();
-        var themeSetting = new UserSettings
-        {
-            ThemeSetting = "Dark"
-        };
-        var jsonString = JsonSerializer.Serialize(themeSetting);
-        var writer = new StreamWriter(_settingsFile);
-        writer.Write(jsonString);
-        writer.Close();
+        SaveSettings();
     }
 
     
@@ -318,7 +303,21 @@ public partial class MainWindow : Window
     
     
     // Non-Event functions
-    private void RefreshThemeSetting()
+    private void SaveSettings()
+    {
+        GetValue(RequestedThemeVariantProperty);
+        var userSetting = new UserSettings()
+        {
+            ThemeSetting = GetValue(RequestedThemeVariantProperty).ToString(),
+            RowHighlightSetting = Editor.Options.HighlightCurrentLine,
+            GridLinesSetting = MainGrid.ShowGridLines
+        };
+        var jsonString = JsonSerializer.Serialize(userSetting);
+        var writer = new StreamWriter(_settingsFile);
+        writer.Write(jsonString);
+        writer.Close();
+    }
+    private void RefreshSettings()
     {
         var jsonString = File.ReadAllText(_settingsFile);
         var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
@@ -335,6 +334,51 @@ public partial class MainWindow : Window
                 break;
             case "Dark":
                 RequestedThemeVariant = ThemeVariant.Dark;
+                break;
+        }
+        switch (userSettings.RowHighlightSetting)
+        {
+            case null:
+                Editor.Options.HighlightCurrentLine = true;
+                break;
+            case true:
+                Editor.Options.HighlightCurrentLine = true;
+                break;
+            case false:
+                Editor.Options.HighlightCurrentLine = false;
+                break;
+        }
+        switch (userSettings.GridLinesSetting)
+        {
+            case null:
+                MainGrid.ShowGridLines = false;
+                break;
+            case true:
+                MainGrid.ShowGridLines = true;
+                break;
+            case false:
+                MainGrid.ShowGridLines = false;
+                break;
+        }
+    }
+    private void RefreshIsChecked()
+    {
+        switch (Editor.Options.HighlightCurrentLine)
+        {
+            case true:
+                HighlightRowButton.IsChecked = true;
+                break;
+            case false:
+                HighlightRowButton.IsChecked = false;
+                break;
+        }
+        switch (MainGrid.ShowGridLines)
+        {
+            case true:
+                GridLinesButton.IsChecked = true;
+                break;
+            case false:
+                GridLinesButton.IsChecked = false;
                 break;
         }
     }
