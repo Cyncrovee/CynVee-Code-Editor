@@ -19,10 +19,15 @@ public partial class MainWindow : Window
     public class UserSettings
     {
         public string? ThemeSetting { get; set; }
-        public bool? RowHighlightSetting { get; set; }
-        public bool? GridLinesSetting { get; set; }
         public string? LastUsedFile { get; set; }
         public string? LastUsedFolder { get; set; }
+        public int? StatusBarSetting { get; set; }
+        public bool? RowHighlightSetting { get; set; }
+        public bool? SpacesEditorSetting { get; set; }
+        public bool? TabSpacesEditorSetting { get; set; }
+        public bool? ColumnRulerSetting { get; set; }
+        public bool? EndOfLineSetting { get; set; }
+        public bool? GridLinesSetting { get; set; }
     }
     public MainWindow()
     {
@@ -117,8 +122,8 @@ public partial class MainWindow : Window
     }
     private void Exit(object? sender, RoutedEventArgs e)
     {
-        this.Close();
         SaveSettings();
+        this.Close();
     }
     // "Edit"
     private void UndoButton_OnClick(object? sender, RoutedEventArgs e)
@@ -158,18 +163,22 @@ public partial class MainWindow : Window
     private void SpacesButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.ShowSpaces = !Editor.Options.ShowSpaces;
+        SaveSettings();
     }
     private void TabSpacesButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.ShowTabs = !Editor.Options.ShowTabs;
+        SaveSettings();
     }
     private void ColumnRulerButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.ShowColumnRulers = !Editor.Options.ShowColumnRulers;
+        SaveSettings();
     }
     private void EndOfLineButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.ShowEndOfLine = !Editor.Options.ShowEndOfLine;
+        SaveSettings();
     }
     private void ListViewButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -211,6 +220,7 @@ public partial class MainWindow : Window
                 StatusBar.SetValue(Grid.RowProperty, 5);
                 break;
         }
+        SaveSettings();
     }
     // "Debug"
     private void GridLinesButton_OnClick(object? sender, RoutedEventArgs e)
@@ -328,6 +338,11 @@ public partial class MainWindow : Window
             ThemeSetting = GetValue(RequestedThemeVariantProperty).ToString(),
             RowHighlightSetting = Editor.Options.HighlightCurrentLine,
             GridLinesSetting = MainGrid.ShowGridLines,
+            StatusBarSetting = StatusBar.GetValue(Grid.RowProperty),
+            SpacesEditorSetting = Editor.Options.ShowSpaces,
+            TabSpacesEditorSetting = Editor.Options.ShowTabs,
+            ColumnRulerSetting = Editor.Options.ShowColumnRulers,
+            EndOfLineSetting = Editor.Options.ShowEndOfLine,
             
             LastUsedFile = _filePath,
             LastUsedFolder = _folderPath
@@ -380,6 +395,66 @@ public partial class MainWindow : Window
                 MainGrid.ShowGridLines = false;
                 break;
         }
+        switch (userSettings.StatusBarSetting)
+        {
+            case null:
+                StatusBar.SetValue(Grid.RowProperty, 5);
+                break;
+            case 5:
+                StatusBar.SetValue(Grid.RowProperty, 5);
+                break;
+            case 3:
+                StatusBar.SetValue(Grid.RowProperty, 3);
+                break;
+        }
+        switch (userSettings.SpacesEditorSetting)
+        {
+            case null:
+                Editor.Options.ShowSpaces = false;
+                break;
+            case true:
+                Editor.Options.ShowSpaces = true;
+                break;
+            case false:
+                Editor.Options.ShowSpaces = false;
+                break;
+        }
+        switch (userSettings.TabSpacesEditorSetting)
+        {
+            case null:
+                Editor.Options.ShowTabs = false;
+                break;
+            case true:
+                Editor.Options.ShowTabs = true;
+                break;
+            case false:
+                Editor.Options.ShowTabs = false;
+                break;
+        }
+        switch (userSettings.ColumnRulerSetting)
+        {
+            case null:
+                Editor.Options.ShowColumnRulers = false;
+                break;
+            case true:
+                Editor.Options.ShowColumnRulers = true;
+                break;
+            case false:
+                Editor.Options.ShowColumnRulers = false;
+                break;
+        }
+		switch (userSettings.EndOfLineSetting)
+		{
+			case null:
+                Editor.Options.ShowEndOfLine = false;
+                break;
+            case true:
+                Editor.Options.ShowEndOfLine = true;
+                break;
+            case false:
+                Editor.Options.ShowEndOfLine = false;
+                break;
+		}
     }
     private void RefreshIsChecked()
     {
@@ -417,6 +492,42 @@ public partial class MainWindow : Window
                 SystemThemeItem.IsChecked = false;
                 DarkThemeItem.IsChecked = false;
                 LightThemeItem.IsChecked = true;
+                break;
+        }
+        switch (Editor.Options.ShowSpaces)
+        {
+            case true:
+                SpacesButton.IsChecked = true;
+                break;
+            case false:
+                SpacesButton.IsChecked = false;
+                break;
+        }
+        switch (Editor.Options.ShowTabs)
+        {
+            case true:
+                TabSpacesButton.IsChecked = true;
+                break;
+            case false:
+                TabSpacesButton.IsChecked = false;
+                break;
+        }
+        switch (Editor.Options.ShowColumnRulers)
+        {
+            case true:
+                ColumnRulerButton.IsChecked = true;
+                break;
+            case false:
+                ColumnRulerButton.IsChecked = false;
+                break;
+        }
+        switch (Editor.Options.ShowEndOfLine)
+        {
+            case true:
+                EndOfLineButton.IsChecked = true;
+                break;
+            case false:
+                EndOfLineButton.IsChecked = false;
                 break;
         }
     }

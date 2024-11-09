@@ -9,8 +9,8 @@
     <Grid x:Name="MainGrid" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, *, Auto">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Click="OpenFileButton_OnClick" Header="Open File..."/>
-                <MenuItem Click="OpenFolderButton_OnClick" Header="Open Folder..."/>
+                <MenuItem Click="OpenFileButton_OnClick" Header="Open File..." InputGesture="Ctrl+O" HotKey="Ctrl+O"/>
+                <MenuItem Click="OpenFolderButton_OnClick" Header="Open Folder..." InputGesture="Ctrl+Shift+O" HotKey="Ctrl+Shift+O"/>
                 <MenuItem Click="SaveButton_OnClick" Header="Save" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
                 <MenuItem x:Name="SaveAsButton" Click="SaveAsButton_OnClick" Header="Save As..." InputGesture="Ctrl+Shift+S" HotKey="Ctrl+Shift+S"/>
                 <Separator/>
@@ -59,9 +59,9 @@
             <Button.Flyout>
                 <MenuFlyout Placement="BottomEdgeAlignedRight">
                     <MenuItem Header="Themes" FlowDirection="RightToLeft">
-                        <MenuItem x:Name="SystemThemeItem" Click="SystemThemeItem_OnClick" Header="Follow System" ToggleType="CheckBox"/>
-                        <MenuItem x:Name="LightThemeItem" Click="LightThemeItem_OnClick" Header="Light Theme" ToggleType="CheckBox"/>
-                        <MenuItem x:Name="DarkThemeItem" Click="DarkThemeItem_OnClick" Header="Dark Theme" ToggleType="CheckBox"/>
+                        <MenuItem x:Name="SystemThemeItem" Click="SystemThemeItem_OnClick" Header="Follow System" ToggleType="CheckBox" FlowDirection="LeftToRight"/>
+                        <MenuItem x:Name="LightThemeItem" Click="LightThemeItem_OnClick" Header="Light Theme" ToggleType="CheckBox" FlowDirection="LeftToRight"/>
+                        <MenuItem x:Name="DarkThemeItem" Click="DarkThemeItem_OnClick" Header="Dark Theme" ToggleType="CheckBox" FlowDirection="LeftToRight"/>
                     </MenuItem>
                 </MenuFlyout>
             </Button.Flyout>
