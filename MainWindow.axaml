@@ -9,43 +9,43 @@
     <Grid x:Name="MainGrid" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, *, Auto">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="Open File..." Click="OpenFileButton_OnClick"/>
-                <MenuItem Header="Open Folder..." Click="OpenFolderButton_OnClick"/>
-                <MenuItem Header="Save" Click="SaveButton_OnClick" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
-                <MenuItem x:Name="SaveAsButton" Header="Save As..." Click="SaveAsButton_OnClick" InputGesture="Ctrl+Shift+S" HotKey="Ctrl+Shift+S"/>
+                <MenuItem Click="OpenFileButton_OnClick" Header="Open File..."/>
+                <MenuItem Click="OpenFolderButton_OnClick" Header="Open Folder..."/>
+                <MenuItem Click="SaveButton_OnClick" Header="Save" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
+                <MenuItem x:Name="SaveAsButton" Click="SaveAsButton_OnClick" Header="Save As..." InputGesture="Ctrl+Shift+S" HotKey="Ctrl+Shift+S"/>
                 <Separator/>
                 <MenuItem Header="Fetch Last Used Folder"/>
-                <MenuItem Header="Exit File/Folder" Click="ExitFileFolder_OnClick"/>
+                <MenuItem Click="ExitFileFolder_OnClick" Header="Exit File/Folder"/>
                 <Separator/>
-                <MenuItem Header="_Exit" Click="Exit"/>
+                <MenuItem Click="Exit" Header="_Exit"/>
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="Undo" Click="UndoButton_OnClick" InputGesture="Ctrl+Z"/>
-                <MenuItem Header="Redo" Click="RedoButton_OnClick" InputGesture="Ctrl+Y"/>
+                <MenuItem Click="UndoButton_OnClick" Header="Undo" InputGesture="Ctrl+Z"/>
+                <MenuItem Click="RedoButton_OnClick" Header="Redo" InputGesture="Ctrl+Y"/>
                 <Separator/>
-                <MenuItem Header="Select All" Click="SelectAll_OnClick" InputGesture="Ctrl + A"/>
+                <MenuItem Click="SelectAll_OnClick" Header="Select All" InputGesture="Ctrl + A"/>
                 <Separator/>
-                <MenuItem Header="Cut" Click="Cut" InputGesture="Ctrl + X"/>
-                <MenuItem Header="Copy" Click="Copy" InputGesture="Ctrl + C"/>
-                <MenuItem Header="Paste" Click="Paste" InputGesture="Ctrl + V"/>
+                <MenuItem Click="Cut" Header="Cut" InputGesture="Ctrl + X"/>
+                <MenuItem Click="Copy" Header="Copy" InputGesture="Ctrl + C"/>
+                <MenuItem Click="Paste" Header="Paste" InputGesture="Ctrl + V"/>
                 <Separator/>
-                <MenuItem Header="Clear" Click="Clear"/>
+                <MenuItem Click="Clear" Header="Clear"/>
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem x:Name="HighlightRowButton" Header="Highlight Current Row" Click="HighlightRowButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
+                <MenuItem x:Name="HighlightRowButton" Click="HighlightRowButton_OnClick" Header="Highlight Current Row" ToggleType="CheckBox" IsChecked="True"/>
                 <Separator/>
-                <MenuItem x:Name="SpacesButton" Header="Show/Hide Spaces" Click="SpacesButton_OnClick" ToggleType="CheckBox"/>
-                <MenuItem x:Name="TabSpacesButton" Header="Show/Hide Tab Spaces" Click="TabSpacesButton_OnClick" ToggleType="CheckBox"/>
-                <MenuItem x:Name="ColumnRulerButton" Header="Show/Hide Column Ruler" Click="ColumnRulerButton_OnClick" ToggleType="CheckBox"/>
-                <MenuItem x:Name="EndOfLineButton" Header="Show/Hide End of Line" Click="EndOfLineButton_OnClick" ToggleType="CheckBox"/>
+                <MenuItem x:Name="SpacesButton" Click="SpacesButton_OnClick" Header="Show/Hide Spaces" ToggleType="CheckBox"/>
+                <MenuItem x:Name="TabSpacesButton" Click="TabSpacesButton_OnClick" Header="Show/Hide Tab Spaces" ToggleType="CheckBox"/>
+                <MenuItem x:Name="ColumnRulerButton" Click="ColumnRulerButton_OnClick" Header="Show/Hide Column Ruler" ToggleType="CheckBox"/>
+                <MenuItem x:Name="EndOfLineButton" Click="EndOfLineButton_OnClick" Header="Show/Hide End of Line" ToggleType="CheckBox"/>
                 <Separator/>
-                <MenuItem x:Name="ListViewButton" Header="Toggle List View Visibility" Click="ListViewButton_OnClick" ToggleType="CheckBox" IsChecked="True"/>
-                <MenuItem x:Name="ListMoveButton" Header="Move List Left/Right" Click="ListMoveButton_OnClick"/>
+                <MenuItem x:Name="ListViewButton" Click="ListViewButton_OnClick" Header="Toggle List View Visibility" ToggleType="CheckBox" IsChecked="True"/>
+                <MenuItem x:Name="ListMoveButton" Click="ListMoveButton_OnClick" Header="Move List Left/Right"/>
                 <Separator/>
-                <MenuItem x:Name="MoveStatusBarButton" Header="Move Status Bar Up/Down" Click="MoveStatusBarButton_OnClick"/>
+                <MenuItem x:Name="MoveStatusBarButton" Click="MoveStatusBarButton_OnClick" Header="Move Status Bar Up/Down"/>
             </MenuItem>
             <MenuItem Header="Debug">
-                <MenuItem x:Name="GridLinesButton" Header="Show Grid Lines" Click="GridLinesButton_OnClick" ToggleType="CheckBox"/>
+                <MenuItem x:Name="GridLinesButton" Click="GridLinesButton_OnClick" Header="Show Grid Lines" ToggleType="CheckBox"/>
             </MenuItem>
         </Menu>
         
@@ -58,9 +58,9 @@
             <Button.Flyout>
                 <MenuFlyout Placement="BottomEdgeAlignedRight">
                     <MenuItem Header="Themes" FlowDirection="RightToLeft">
-                        <MenuItem x:Name="SystemThemeItem" Header="Follow System" Click="SystemThemeItem_OnClick"/>
-                        <MenuItem x:Name="LightThemeItem" Header="Light Theme" Click="LightThemeItem_OnClick"/>
-                        <MenuItem x:Name="DarkThemeItem" Header="Dark Theme" Click="DarkThemeItem_OnClick"/>
+                        <MenuItem x:Name="SystemThemeItem" Click="SystemThemeItem_OnClick" Header="Follow System" ToggleType="CheckBox"/>
+                        <MenuItem x:Name="LightThemeItem" Click="LightThemeItem_OnClick" Header="Light Theme" ToggleType="CheckBox"/>
+                        <MenuItem x:Name="DarkThemeItem" Click="DarkThemeItem_OnClick" Header="Dark Theme" ToggleType="CheckBox"/>
                     </MenuItem>
                 </MenuFlyout>
             </Button.Flyout>
@@ -70,11 +70,11 @@
         <avaloniaEdit:TextEditor x:Name="Editor" ShowLineNumbers="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1">
             <avaloniaEdit:TextEditor.ContextFlyout>
                 <MenuFlyout>
-                    <MenuItem Header="Cut" InputGesture="CTRL+X" Click="Cut"/>
-                    <MenuItem Header="Copy" InputGesture="CTRL+C" Click="Copy"/>
-                    <MenuItem Header="Paste" InputGesture="CTRL+V" Click="Paste"/>
-                    <MenuItem Header="-"/>
-                    <MenuItem Header="Select All" InputGesture="CTRL+A" Click="SelectAll_OnClick"/>
+                    <MenuItem Click="Cut" Header="Cut" InputGesture="CTRL+X"/>
+                    <MenuItem Click="Copy" Header="Copy" InputGesture="CTRL+C"/>
+                    <MenuItem Click="Paste" Header="Paste" InputGesture="CTRL+V"/>
+                    <Separator/>
+                    <MenuItem Click="SelectAll_OnClick" Header="Select All" InputGesture="CTRL+A"/>
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>
         </avaloniaEdit:TextEditor>

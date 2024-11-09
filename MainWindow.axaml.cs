@@ -58,6 +58,7 @@ public partial class MainWindow : Window
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
     }
     
+    
     private readonly string _settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
     private string _filePath = string.Empty;
     private string _folderPath = string.Empty;
@@ -302,7 +303,7 @@ public partial class MainWindow : Window
     }
     
     
-    // Non-Event functions
+    // User settings functions
     private void SaveSettings()
     {
         GetValue(RequestedThemeVariantProperty);
@@ -381,7 +382,28 @@ public partial class MainWindow : Window
                 GridLinesButton.IsChecked = false;
                 break;
         }
+        switch (GetValue(RequestedThemeVariantProperty).ToString())
+        {
+            case "Default":
+                SystemThemeItem.IsChecked = true;
+                DarkThemeItem.IsChecked = false;
+                LightThemeItem.IsChecked = false;
+                break;
+            case "Dark":
+                SystemThemeItem.IsChecked = false;
+                DarkThemeItem.IsChecked = true;
+                LightThemeItem.IsChecked = false;
+                break;
+            case "Light":
+                SystemThemeItem.IsChecked = false;
+                DarkThemeItem.IsChecked = false;
+                LightThemeItem.IsChecked = true;
+                break;
+        }
     }
+    
+    
+    // Misc functions
     private void LoadFromList()
     {
         if (FileList.SelectedItem != null)
