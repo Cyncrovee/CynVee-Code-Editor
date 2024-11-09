@@ -21,6 +21,8 @@ public partial class MainWindow : Window
         public string? ThemeSetting { get; set; }
         public bool? RowHighlightSetting { get; set; }
         public bool? GridLinesSetting { get; set; }
+        public string? LastUsedFile { get; set; }
+        public string? LastUsedFolder { get; set; }
     }
     public MainWindow()
     {
@@ -240,6 +242,7 @@ public partial class MainWindow : Window
                 using StreamReader reader = new(selectedFile);
                 var text = reader.ReadToEndAsync().Result;
                 Editor.Text = text;
+                SaveSettings();
             }
             catch (Exception ex)
             {
@@ -266,6 +269,7 @@ public partial class MainWindow : Window
             _folderPath = folder[0].Path.LocalPath;
             FolderPathBlock.Text = "Currently Selected File: " + _folderPath;
             RefreshList();
+            SaveSettings();
         }
         else
         {
@@ -274,18 +278,30 @@ public partial class MainWindow : Window
     }
     private void SystemThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
+        SystemThemeItem.IsChecked = true;
+        LightThemeItem.IsChecked = false;
+        DarkThemeItem.IsChecked = false;
+        
         RequestedThemeVariant = ThemeVariant.Default;
         RefreshFileInformation();
         SaveSettings();
     }
     private void LightThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
+        SystemThemeItem.IsChecked = false;
+        LightThemeItem.IsChecked = true;
+        DarkThemeItem.IsChecked = false;
+        
         RequestedThemeVariant = ThemeVariant.Light;
         RefreshFileInformation();
         SaveSettings();
     }
     private void DarkThemeItem_OnClick(object? sender, RoutedEventArgs e)
     {
+        SystemThemeItem.IsChecked = false;
+        LightThemeItem.IsChecked = false;
+        DarkThemeItem.IsChecked = true;
+        
         RequestedThemeVariant = ThemeVariant.Dark;
         RefreshFileInformation();
         SaveSettings();
@@ -311,7 +327,10 @@ public partial class MainWindow : Window
         {
             ThemeSetting = GetValue(RequestedThemeVariantProperty).ToString(),
             RowHighlightSetting = Editor.Options.HighlightCurrentLine,
-            GridLinesSetting = MainGrid.ShowGridLines
+            GridLinesSetting = MainGrid.ShowGridLines,
+            
+            LastUsedFile = _filePath,
+            LastUsedFolder = _folderPath
         };
         var jsonString = JsonSerializer.Serialize(userSetting);
         var writer = new StreamWriter(_settingsFile);
@@ -419,6 +438,7 @@ public partial class MainWindow : Window
                 Editor.Text = text;
                 reader.Close();
                 FilePathBlock.Text = "Currently Selected File: " + selectedFile;
+                SaveSettings();
             }
             catch (Exception ex)
             {
@@ -490,5 +510,35 @@ public partial class MainWindow : Window
         }
         var fileExtension = Path.GetExtension(_filePath);
         FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
+    }
+
+    private void LastFolderButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var jsonString = File.ReadAllText(_settingsFile);
+        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
+        if (userSettings.LastUsedFolder == null) return;
+        _folderPath = userSettings.LastUsedFolder;
+        RefreshList();
+    }
+
+    private void LastFileButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var jsonString = File.ReadAllText(_settingsFile);
+        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
+        if (userSettings.LastUsedFile == null) return;
+        _filePath = userSettings.LastUsedFile;
+        try
+        {
+            using StreamReader reader = new(_filePath);
+            var text = reader.ReadToEnd();
+            Editor.Text = text;
+            reader.Close();
+            FilePathBlock.Text = "Currently Selected File: " + _filePath;
+            RefreshFileInformation();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
