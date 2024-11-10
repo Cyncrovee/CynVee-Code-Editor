@@ -41,7 +41,7 @@
                 <MenuItem x:Name="EndOfLineButton" Click="EndOfLineButton_OnClick" Header="Show/Hide End of Line" ToggleType="CheckBox"/>
                 <Separator/>
                 <MenuItem x:Name="ListViewButton" Click="ListViewButton_OnClick" Header="Toggle List View Visibility" ToggleType="CheckBox" IsChecked="True"/>
-                <MenuItem x:Name="ListMoveButton" Click="ListMoveButton_OnClick" Header="Move List Left/Right"/>
+                <MenuItem x:Name="ListMoveButton" IsVisible="False" Click="ListMoveButton_OnClick" Header="Move List Left/Right"/>
                 <Separator/>
                 <MenuItem x:Name="ViewStatusBarButton" Click="ViewStatusBarButton_OnClick" Header="Toggle Status Bar Visibility" ToggleType="CheckBox"/>
                 <MenuItem x:Name="MoveStatusBarButton" Click="MoveStatusBarButton_OnClick" Header="Move Status Bar Up/Down"/>
