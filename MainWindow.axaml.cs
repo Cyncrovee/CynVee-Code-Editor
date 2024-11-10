@@ -717,8 +717,8 @@ public partial class MainWindow : Window
         }
         catch (Exception)
         {
-            LanguageStatusText.Text= ("Language: " + "Not a Programming Language/Language Not Supported");
-            Console.WriteLine("Not a Programming Language/Language Not Supported");
+            LanguageStatusText.Text= ("Language: " + "Not a Programming Language/ Language Not Supported/ No file selected");
+            Console.WriteLine("Not a Programming Language/Language Not Supported/ No file selected");
         }
         var fileExtension = Path.GetExtension(_filePath);
         FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
