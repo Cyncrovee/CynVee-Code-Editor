@@ -22,6 +22,7 @@ public partial class MainWindow : Window
         public string? LastUsedFile { get; set; }
         public string? LastUsedFolder { get; set; }
         public int? StatusBarSetting { get; set; }
+        public bool? StatusBarViewSetting { get; set; }
         public bool? RowHighlightSetting { get; set; }
         public bool? SpacesEditorSetting { get; set; }
         public bool? TabSpacesEditorSetting { get; set; }
@@ -209,6 +210,11 @@ public partial class MainWindow : Window
                 break;
         }
     }
+    private void ViewStatusBarButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        StatusBar.IsVisible = !StatusBar.IsVisible;
+        SaveSettings();
+    }
     private void MoveStatusBarButton_OnClick(object? sender, RoutedEventArgs e)
     {
         switch (StatusBar.GetValue(Grid.RowProperty))
@@ -339,6 +345,7 @@ public partial class MainWindow : Window
             RowHighlightSetting = Editor.Options.HighlightCurrentLine,
             GridLinesSetting = MainGrid.ShowGridLines,
             StatusBarSetting = StatusBar.GetValue(Grid.RowProperty),
+            StatusBarViewSetting = StatusBar.IsVisible,
             SpacesEditorSetting = Editor.Options.ShowSpaces,
             TabSpacesEditorSetting = Editor.Options.ShowTabs,
             ColumnRulerSetting = Editor.Options.ShowColumnRulers,
@@ -405,6 +412,18 @@ public partial class MainWindow : Window
                 break;
             case 3:
                 StatusBar.SetValue(Grid.RowProperty, 3);
+                break;
+        }
+        switch (userSettings.StatusBarViewSetting)
+        {
+            case null:
+                StatusBar.IsVisible = true;
+                break;
+            case true:
+                StatusBar.IsVisible = true;
+                break;
+            case false:
+                StatusBar.IsVisible = false;
                 break;
         }
         switch (userSettings.SpacesEditorSetting)
@@ -492,6 +511,15 @@ public partial class MainWindow : Window
                 SystemThemeItem.IsChecked = false;
                 DarkThemeItem.IsChecked = false;
                 LightThemeItem.IsChecked = true;
+                break;
+        }
+        switch (StatusBar.IsVisible)
+        {
+            case true:
+                ViewStatusBarButton.IsChecked = true;
+                break;
+            case false:
+                ViewStatusBarButton.IsChecked = false;
                 break;
         }
         switch (Editor.Options.ShowSpaces)
