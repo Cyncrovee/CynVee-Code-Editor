@@ -30,6 +30,7 @@ public partial class MainWindow : Window
         public bool? TabSpacesEditorSetting { get; set; }
         public bool? ColumnRulerSetting { get; set; }
         public bool? EndOfLineSetting { get; set; }
+        public bool? ListViewSetting { get; set; }
         public bool? StatusBarViewSetting { get; set; }
         public int? StatusBarSetting { get; set; }
         // Define Debug settings
@@ -226,6 +227,7 @@ public partial class MainWindow : Window
                 Editor.SetValue(Grid.ColumnSpanProperty, 1);
                 break;
         }
+        SaveSettings();
     }
     private void ListMoveButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -383,6 +385,7 @@ public partial class MainWindow : Window
             TabSpacesEditorSetting = Editor.Options.ShowTabs,
             ColumnRulerSetting = Editor.Options.ShowColumnRulers,
             EndOfLineSetting = Editor.Options.ShowEndOfLine,
+            ListViewSetting = FileList.IsVisible,
             
             LastUsedFile = _filePath,
             LastUsedFolder = _folderPath
@@ -474,6 +477,27 @@ public partial class MainWindow : Window
                 Editor.Options.ShowEndOfLine = false;
                 break;
 		}
+        switch (userSettings.ListViewSetting)
+        {
+            case null:
+                FileList.IsVisible = true;
+                break;
+            case true:
+                FileList.IsVisible = true;
+                break;
+            case false:
+                FileList.IsVisible = false;
+                switch (Editor.GetValue(Grid.ColumnSpanProperty))
+                {
+                    case 1:
+                        Editor.SetValue(Grid.ColumnSpanProperty, 2);
+                        break;
+                    case 2:
+                        Editor.SetValue(Grid.ColumnSpanProperty, 1);
+                        break;
+                }
+                break;
+        }
         switch (userSettings.StatusBarViewSetting)
         {
             case null:
@@ -577,6 +601,15 @@ public partial class MainWindow : Window
                 break;
             case false:
                 EndOfLineButton.IsChecked = false;
+                break;
+        }
+        switch (FileList.IsVisible)
+        {
+            case true:
+                ListViewButton.IsChecked = true;
+                break;
+            case false:
+                ListViewButton.IsChecked = false;
                 break;
         }
         switch (StatusBar.IsVisible)
