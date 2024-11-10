@@ -18,16 +18,21 @@ public partial class MainWindow : Window
 {
     public class UserSettings
     {
+        // Define theme setting
         public string? ThemeSetting { get; set; }
+        // Define MenuBar settings
+        // Define File settings
         public string? LastUsedFile { get; set; }
         public string? LastUsedFolder { get; set; }
-        public int? StatusBarSetting { get; set; }
-        public bool? StatusBarViewSetting { get; set; }
+        // Define View settings
         public bool? RowHighlightSetting { get; set; }
         public bool? SpacesEditorSetting { get; set; }
         public bool? TabSpacesEditorSetting { get; set; }
         public bool? ColumnRulerSetting { get; set; }
         public bool? EndOfLineSetting { get; set; }
+        public bool? StatusBarViewSetting { get; set; }
+        public int? StatusBarSetting { get; set; }
+        // Define Debug settings
         public bool? GridLinesSetting { get; set; }
     }
     public MainWindow()
@@ -108,6 +113,34 @@ public partial class MainWindow : Window
         else
         {
             Console.WriteLine("No file created");
+        }
+    }
+    private void LastFolderButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var jsonString = File.ReadAllText(_settingsFile);
+        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
+        if (userSettings.LastUsedFolder == null) return;
+        _folderPath = userSettings.LastUsedFolder;
+        RefreshList();
+    }
+    private void LastFileButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var jsonString = File.ReadAllText(_settingsFile);
+        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
+        if (userSettings.LastUsedFile == null) return;
+        _filePath = userSettings.LastUsedFile;
+        try
+        {
+            using StreamReader reader = new(_filePath);
+            var text = reader.ReadToEnd();
+            Editor.Text = text;
+            reader.Close();
+            FilePathBlock.Text = "Currently Selected File: " + _filePath;
+            RefreshFileInformation();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
     }
     private void ExitFileFolder_OnClick(object? sender, RoutedEventArgs e)
@@ -363,6 +396,7 @@ public partial class MainWindow : Window
     {
         var jsonString = File.ReadAllText(_settingsFile);
         var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
+        // Refresh theme setting
         switch (userSettings.ThemeSetting)
         {
             case null:
@@ -378,6 +412,8 @@ public partial class MainWindow : Window
                 RequestedThemeVariant = ThemeVariant.Dark;
                 break;
         }
+        // Refresh MenuBar settings
+        // View
         switch (userSettings.RowHighlightSetting)
         {
             case null:
@@ -388,42 +424,6 @@ public partial class MainWindow : Window
                 break;
             case false:
                 Editor.Options.HighlightCurrentLine = false;
-                break;
-        }
-        switch (userSettings.GridLinesSetting)
-        {
-            case null:
-                MainGrid.ShowGridLines = false;
-                break;
-            case true:
-                MainGrid.ShowGridLines = true;
-                break;
-            case false:
-                MainGrid.ShowGridLines = false;
-                break;
-        }
-        switch (userSettings.StatusBarSetting)
-        {
-            case null:
-                StatusBar.SetValue(Grid.RowProperty, 5);
-                break;
-            case 5:
-                StatusBar.SetValue(Grid.RowProperty, 5);
-                break;
-            case 3:
-                StatusBar.SetValue(Grid.RowProperty, 3);
-                break;
-        }
-        switch (userSettings.StatusBarViewSetting)
-        {
-            case null:
-                StatusBar.IsVisible = true;
-                break;
-            case true:
-                StatusBar.IsVisible = true;
-                break;
-            case false:
-                StatusBar.IsVisible = false;
                 break;
         }
         switch (userSettings.SpacesEditorSetting)
@@ -474,27 +474,47 @@ public partial class MainWindow : Window
                 Editor.Options.ShowEndOfLine = false;
                 break;
 		}
+        switch (userSettings.StatusBarViewSetting)
+        {
+            case null:
+                StatusBar.IsVisible = true;
+                break;
+            case true:
+                StatusBar.IsVisible = true;
+                break;
+            case false:
+                StatusBar.IsVisible = false;
+                break;
+        }
+        switch (userSettings.StatusBarSetting)
+        {
+            case null:
+                StatusBar.SetValue(Grid.RowProperty, 5);
+                break;
+            case 5:
+                StatusBar.SetValue(Grid.RowProperty, 5);
+                break;
+            case 3:
+                StatusBar.SetValue(Grid.RowProperty, 3);
+                break;
+        }
+        // Debug
+        switch (userSettings.GridLinesSetting)
+        {
+            case null:
+                MainGrid.ShowGridLines = false;
+                break;
+            case true:
+                MainGrid.ShowGridLines = true;
+                break;
+            case false:
+                MainGrid.ShowGridLines = false;
+                break;
+        }
     }
     private void RefreshIsChecked()
     {
-        switch (Editor.Options.HighlightCurrentLine)
-        {
-            case true:
-                HighlightRowButton.IsChecked = true;
-                break;
-            case false:
-                HighlightRowButton.IsChecked = false;
-                break;
-        }
-        switch (MainGrid.ShowGridLines)
-        {
-            case true:
-                GridLinesButton.IsChecked = true;
-                break;
-            case false:
-                GridLinesButton.IsChecked = false;
-                break;
-        }
+        // Refresh theme setting checkbox
         switch (GetValue(RequestedThemeVariantProperty).ToString())
         {
             case "Default":
@@ -513,13 +533,14 @@ public partial class MainWindow : Window
                 LightThemeItem.IsChecked = true;
                 break;
         }
-        switch (StatusBar.IsVisible)
+        // Refresh View settings checkboxes
+        switch (Editor.Options.HighlightCurrentLine)
         {
             case true:
-                ViewStatusBarButton.IsChecked = true;
+                HighlightRowButton.IsChecked = true;
                 break;
             case false:
-                ViewStatusBarButton.IsChecked = false;
+                HighlightRowButton.IsChecked = false;
                 break;
         }
         switch (Editor.Options.ShowSpaces)
@@ -556,6 +577,25 @@ public partial class MainWindow : Window
                 break;
             case false:
                 EndOfLineButton.IsChecked = false;
+                break;
+        }
+        switch (StatusBar.IsVisible)
+        {
+            case true:
+                ViewStatusBarButton.IsChecked = true;
+                break;
+            case false:
+                ViewStatusBarButton.IsChecked = false;
+                break;
+        }
+        // Refresh Debug settings checkboxes
+        switch (MainGrid.ShowGridLines)
+        {
+            case true:
+                GridLinesButton.IsChecked = true;
+                break;
+            case false:
+                GridLinesButton.IsChecked = false;
                 break;
         }
     }
@@ -649,35 +689,5 @@ public partial class MainWindow : Window
         }
         var fileExtension = Path.GetExtension(_filePath);
         FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
-    }
-
-    private void LastFolderButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        var jsonString = File.ReadAllText(_settingsFile);
-        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
-        if (userSettings.LastUsedFolder == null) return;
-        _folderPath = userSettings.LastUsedFolder;
-        RefreshList();
-    }
-
-    private void LastFileButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        var jsonString = File.ReadAllText(_settingsFile);
-        var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
-        if (userSettings.LastUsedFile == null) return;
-        _filePath = userSettings.LastUsedFile;
-        try
-        {
-            using StreamReader reader = new(_filePath);
-            var text = reader.ReadToEnd();
-            Editor.Text = text;
-            reader.Close();
-            FilePathBlock.Text = "Currently Selected File: " + _filePath;
-            RefreshFileInformation();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
     }
 }
