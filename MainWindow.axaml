@@ -43,6 +43,7 @@
                 <MenuItem x:Name="ListViewButton" Click="ListViewButton_OnClick" Header="Toggle List View Visibility" ToggleType="CheckBox" IsChecked="True"/>
                 <MenuItem x:Name="ListMoveButton" Click="ListMoveButton_OnClick" Header="Move List Left/Right"/>
                 <Separator/>
+                <MenuItem x:Name="ViewStatusBarButton" Click="ViewStatusBarButton_OnClick" Header="Toggle Status Bar Visibility" ToggleType="CheckBox"/>
                 <MenuItem x:Name="MoveStatusBarButton" Click="MoveStatusBarButton_OnClick" Header="Move Status Bar Up/Down"/>
             </MenuItem>
             <MenuItem Header="Debug">
