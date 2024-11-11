@@ -189,6 +189,18 @@ public partial class MainWindow : Window
     {
         Editor.Clear();
     }
+    private void OpenFind(object? sender, RoutedEventArgs e)
+    {
+        Editor.SearchPanel.Close();
+        Editor.SearchPanel.Open();
+        Editor.SearchPanel.IsReplaceMode = false;
+    }
+    private void OpenFindReplace(object? sender, RoutedEventArgs e)
+    {
+        Editor.SearchPanel.Close();
+        Editor.SearchPanel.Open();
+        Editor.SearchPanel.IsReplaceMode = true;
+    }
     // "View"
     private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
     {
