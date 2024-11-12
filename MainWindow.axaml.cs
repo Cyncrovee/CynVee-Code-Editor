@@ -37,6 +37,11 @@ public partial class MainWindow : Window
         // Define Debug settings
         public bool? GridLinesSetting { get; set; }
     }
+    // Json serializer write options
+    private static readonly JsonSerializerOptions JsonWriteOptions = new()
+    {
+        WriteIndented = true
+    };
     private string _settingsFile = String.Empty;
     public MainWindow()
     {
@@ -127,6 +132,7 @@ public partial class MainWindow : Window
             await using var writer = new StreamWriter(stream);
             await writer.WriteAsync(Editor.Text);
             _filePath = file.Path.LocalPath;
+            FilePathBlock.Text = "Currently Selected File: " + _filePath;
             RefreshFileInformation();
         }
         else
@@ -431,7 +437,7 @@ public partial class MainWindow : Window
             LastUsedFile = _filePath,
             LastUsedFolder = _folderPath
         };
-        var jsonString = JsonSerializer.Serialize(userSetting);
+        var jsonString = JsonSerializer.Serialize(userSetting, JsonWriteOptions);
         var writer = new StreamWriter(_settingsFile);
         writer.Write(jsonString);
         writer.Close();
