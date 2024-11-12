@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
@@ -36,11 +37,23 @@ public partial class MainWindow : Window
         // Define Debug settings
         public bool? GridLinesSetting { get; set; }
     }
+    private string _settingsFile = String.Empty;
     public MainWindow()
     {
         InitializeComponent();
 
-        var settingsFilePath = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
+        GetSettingsFile();
+        
+        Console.WriteLine(Directory.GetCurrentDirectory());
+        var settingsFilePath = String.Empty;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            settingsFilePath = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            settingsFilePath = Directory.GetCurrentDirectory() + "/CynVee-Code-Editor-Settings.json";
+        }
         
         if (File.Exists(settingsFilePath))
         {
@@ -79,7 +92,6 @@ public partial class MainWindow : Window
     }
     
     
-    private readonly string _settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
     private string _filePath = string.Empty;
     private string _folderPath = string.Empty;
     
@@ -389,6 +401,17 @@ public partial class MainWindow : Window
     
     
     // User settings functions
+    private void GetSettingsFile()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            _settingsFile = Directory.GetCurrentDirectory() + "\\CynVee-Code-Editor-Settings.json";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            _settingsFile= Directory.GetCurrentDirectory() + "/CynVee-Code-Editor-Settings.json";
+        }
+    }
     private void SaveSettings()
     {
         GetValue(RequestedThemeVariantProperty);
