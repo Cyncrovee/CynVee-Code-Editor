@@ -5,7 +5,7 @@
         xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CynVee_Code_Editor.MainWindow"
-        Title="CynVee_Code_Editor">
+        Title="CynVee-Code-Editor">
     <Grid x:Name="MainGrid" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, *, Auto">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -44,13 +44,16 @@
                 <MenuItem x:Name="EndOfLineButton" Click="EndOfLineButton_OnClick" Header="Show/Hide End of Line" ToggleType="CheckBox"/>
                 <Separator/>
                 <MenuItem x:Name="ListViewButton" Click="ListViewButton_OnClick" Header="Toggle List View Visibility" ToggleType="CheckBox" IsChecked="True"/>
-                <MenuItem x:Name="ListMoveButton" IsVisible="False" Click="ListMoveButton_OnClick" Header="Move List Left/Right"/>
+                <MenuItem x:Name="ListMoveButton" IsVisible="False" IsEnabled="False" Click="ListMoveButton_OnClick" Header="Move List Left/Right"/>
                 <Separator/>
                 <MenuItem x:Name="ViewStatusBarButton" Click="ViewStatusBarButton_OnClick" Header="Toggle Status Bar Visibility" ToggleType="CheckBox"/>
                 <MenuItem x:Name="MoveStatusBarButton" Click="MoveStatusBarButton_OnClick" Header="Move Status Bar Up/Down"/>
             </MenuItem>
             <MenuItem Header="Debug">
                 <MenuItem x:Name="GridLinesButton" Click="GridLinesButton_OnClick" Header="Show Grid Lines" ToggleType="CheckBox"/>
+            </MenuItem>
+            <MenuItem Header="Version">
+                <MenuItem Header="DEV"/>
             </MenuItem>
         </Menu>
         
@@ -90,6 +93,7 @@
             <TextBlock x:Name="StatusText" Text="Line: Column: | " Margin="5 0 0 0" VerticalAlignment="Center" FontSize="12"/>
             <TextBlock x:Name="FileExtensionText" Text ="File Extension: | " FontSize="12" VerticalAlignment="Center"/>
             <TextBlock x:Name="LanguageStatusText" Text="Language: " VerticalAlignment="Center" FontSize="12"/>
+            <TextBlock x:Name="VersionText" Text="CynVee-Code-Editor Version: 0.0.1" VerticalAlignment="Center" Margin="0,20,0,0" FontSize="12"/>
         </StackPanel>
     </Grid>
 </Window>
