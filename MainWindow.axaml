@@ -67,6 +67,9 @@
                         <MenuItem x:Name="LightThemeItem" Click="LightThemeItem_OnClick" Header="Light Theme" ToggleType="CheckBox" FlowDirection="LeftToRight"/>
                         <MenuItem x:Name="DarkThemeItem" Click="DarkThemeItem_OnClick" Header="Dark Theme" ToggleType="CheckBox" FlowDirection="LeftToRight"/>
                     </MenuItem>
+                    <MenuItem Header="Indentation Size" FlowDirection="RightToLeft">
+                        <ComboBox x:Name="IndentationSizeComboBox" SelectionChanged="IndentationSizeComboBox_OnSelectionChanged" FlowDirection="LeftToRight"/>
+                    </MenuItem>
                 </MenuFlyout>
             </Button.Flyout>
         </Button>

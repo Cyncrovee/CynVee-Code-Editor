@@ -70,6 +70,12 @@ public partial class MainWindow : Window
         
         Editor.Options.AllowToggleOverstrikeMode = true;
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
+        
+        int[] indentationSizes = Enumerable.Range(1, 64).ToArray();
+        foreach (var  indentationSize in indentationSizes)
+        {
+            IndentationSizeComboBox.Items.Add(indentationSize);
+        }
     }
     
     
@@ -734,5 +740,12 @@ public partial class MainWindow : Window
         }
         var fileExtension = Path.GetExtension(_filePath);
         FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
+    }
+
+    private void IndentationSizeComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (IndentationSizeComboBox.SelectedItem == null) return;
+        Editor.Options.IndentationSize = IndentationSizeComboBox.SelectedIndex + 1;
+        Console.WriteLine(Editor.Options.IndentationSize);
     }
 }
