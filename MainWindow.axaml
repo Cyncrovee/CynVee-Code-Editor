@@ -53,7 +53,7 @@
                 <MenuItem x:Name="GridLinesButton" Click="GridLinesButton_OnClick" Header="Show Grid Lines" ToggleType="CheckBox"/>
             </MenuItem>
             <MenuItem Header="Version">
-                <MenuItem Header="DEV"/>
+                <MenuItem Header="DEV BRANCH (main)"/>
             </MenuItem>
         </Menu>
         
