@@ -1,12 +1,17 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
+using System.Drawing.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Media.Fonts;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using AvaloniaEdit;
@@ -21,6 +26,8 @@ public partial class MainWindow : Window
     {
         // Define theme setting
         public string? ThemeSetting { get; set; }
+        //Define font family setting
+        public string? FontFamilySetting { get; set; }
         // Define MenuBar settings
         // Define File settings
         public string? LastUsedFile { get; set; }
@@ -37,11 +44,16 @@ public partial class MainWindow : Window
         // Define Debug settings
         public bool? GridLinesSetting { get; set; }
     }
+    // Json serializer write options
+    private static readonly JsonSerializerOptions JsonWriteOptions = new()
+    {
+        WriteIndented = true
+    };
     private string _settingsFile = String.Empty;
     public MainWindow()
     {
         InitializeComponent();
-
+        
         GetSettingsFile();
         
         Console.WriteLine(Directory.GetCurrentDirectory());
@@ -89,8 +101,12 @@ public partial class MainWindow : Window
         {
             IndentationSizeComboBox.Items.Add(indentationSize);
         }
+        
+        foreach (var font in FontManager.Current.SystemFonts.OrderBy(f => f.Name))
+        {
+            FontFamilyComboBox.Items.Add(font);
+        }
     }
-    
     
     private string _filePath = string.Empty;
     private string _folderPath = string.Empty;
@@ -127,6 +143,7 @@ public partial class MainWindow : Window
             await using var writer = new StreamWriter(stream);
             await writer.WriteAsync(Editor.Text);
             _filePath = file.Path.LocalPath;
+            FilePathBlock.Text = "Currently Selected File: " + _filePath;
             RefreshFileInformation();
         }
         else
@@ -140,6 +157,7 @@ public partial class MainWindow : Window
         var userSettings = JsonSerializer.Deserialize<UserSettings>(jsonString);
         if (userSettings.LastUsedFolder == null) return;
         _folderPath = userSettings.LastUsedFolder;
+        FolderPathBlock.Text = "Currently Selected Folder: " + _folderPath;
         RefreshList();
     }
     private void LastFileButton_OnClick(object? sender, RoutedEventArgs e)
@@ -387,6 +405,18 @@ public partial class MainWindow : Window
         RefreshFileInformation();
         SaveSettings();
     }
+    private void IndentationSizeComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (IndentationSizeComboBox.SelectedItem == null) return;
+        Editor.Options.IndentationSize = IndentationSizeComboBox.SelectedIndex + 1;
+        Console.WriteLine(Editor.Options.IndentationSize);
+    }
+    private void FontFamilyComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (FontFamilyComboBox.SelectedItem == null) return;
+        Editor.FontFamily = FontFamily.Parse(FontFamilyComboBox.SelectedItem.ToString());
+        SaveSettings();
+    }
 
     
     // Functions for Editor and FileList
@@ -418,6 +448,7 @@ public partial class MainWindow : Window
         var userSetting = new UserSettings()
         {
             ThemeSetting = GetValue(RequestedThemeVariantProperty).ToString(),
+            FontFamilySetting = Editor.FontFamily.Name,
             RowHighlightSetting = Editor.Options.HighlightCurrentLine,
             GridLinesSetting = MainGrid.ShowGridLines,
             StatusBarSetting = StatusBar.GetValue(Grid.RowProperty),
@@ -431,7 +462,7 @@ public partial class MainWindow : Window
             LastUsedFile = _filePath,
             LastUsedFolder = _folderPath
         };
-        var jsonString = JsonSerializer.Serialize(userSetting);
+        var jsonString = JsonSerializer.Serialize(userSetting, JsonWriteOptions);
         var writer = new StreamWriter(_settingsFile);
         writer.Write(jsonString);
         writer.Close();
@@ -454,6 +485,27 @@ public partial class MainWindow : Window
                 break;
             case "Dark":
                 RequestedThemeVariant = ThemeVariant.Dark;
+                break;
+        }
+        // Refresh font family setting
+        switch (userSettings.FontFamilySetting)
+        {
+            case not null:
+                foreach (var fontFamily in FontManager.Current.SystemFonts)
+                {
+                    var fontResult = string.Equals(userSettings.FontFamilySetting, fontFamily.Name);
+                    if (fontResult)
+                    {
+                        Console.WriteLine("Font family found: " + fontFamily.Name);
+                        Editor.FontFamily = userSettings.FontFamilySetting;
+                        FontFamilyComboBox.PlaceholderText = fontFamily.Name;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Font family not found: " + fontFamily.Name);
+                    }
+                }
                 break;
         }
         // Refresh MenuBar settings
@@ -763,12 +815,5 @@ public partial class MainWindow : Window
         }
         var fileExtension = Path.GetExtension(_filePath);
         FileExtensionText.Text = ("File Extension: " + fileExtension + " | ");
-    }
-
-    private void IndentationSizeComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (IndentationSizeComboBox.SelectedItem == null) return;
-        Editor.Options.IndentationSize = IndentationSizeComboBox.SelectedIndex + 1;
-        Console.WriteLine(Editor.Options.IndentationSize);
     }
 }

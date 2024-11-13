@@ -73,6 +73,9 @@
                     <MenuItem Header="Indentation Size" FlowDirection="RightToLeft">
                         <ComboBox x:Name="IndentationSizeComboBox" SelectionChanged="IndentationSizeComboBox_OnSelectionChanged" FlowDirection="LeftToRight"/>
                     </MenuItem>
+                    <MenuItem Header="Editor Font Family" FlowDirection="RightToLeft">
+                        <ComboBox x:Name="FontFamilyComboBox" SelectionChanged="FontFamilyComboBox_OnSelectionChanged" FlowDirection="LeftToRight"/>
+                    </MenuItem>
                 </MenuFlyout>
             </Button.Flyout>
         </Button>
@@ -93,7 +96,6 @@
             <TextBlock x:Name="StatusText" Text="Line: Column: | " Margin="5 0 0 0" VerticalAlignment="Center" FontSize="12"/>
             <TextBlock x:Name="FileExtensionText" Text ="File Extension: | " FontSize="12" VerticalAlignment="Center"/>
             <TextBlock x:Name="LanguageStatusText" Text="Language: " VerticalAlignment="Center" FontSize="12"/>
-            <TextBlock x:Name="VersionText" Text="CynVee-Code-Editor Version: 0.0.1" VerticalAlignment="Center" Margin="0,20,0,0" FontSize="12"/>
         </StackPanel>
     </Grid>
 </Window>
