@@ -73,6 +73,9 @@
                     <MenuItem Header="Indentation Size" FlowDirection="RightToLeft">
                         <ComboBox x:Name="IndentationSizeComboBox" SelectionChanged="IndentationSizeComboBox_OnSelectionChanged" FlowDirection="LeftToRight"/>
                     </MenuItem>
+                    <MenuItem Header="Editor Font Family" FlowDirection="RightToLeft">
+                        <ComboBox x:Name="FontFamilyComboBox" SelectionChanged="FontFamilyComboBox_OnSelectionChanged" FlowDirection="LeftToRight"/>
+                    </MenuItem>
                 </MenuFlyout>
             </Button.Flyout>
         </Button>
