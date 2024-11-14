@@ -33,6 +33,8 @@
                 <MenuItem Click="OpenFind" Header="Find" InputGesture="Ctrl+F"/>
                 <MenuItem Click="OpenFindReplace" Header="Find and Replace" InputGesture="Ctrl+H"/>
                 <Separator/>
+                <MenuItem x:Name="ToggleRectangularSelectionButton" Click="ToggleRectangularSelectionButton_OnClick" Header="Toggle Rectangular Selection" ToggleType="CheckBox"/>
+                <Separator/>
                 <MenuItem Click="Clear" Header="Clear"/>
             </MenuItem>
             <MenuItem Header="View">

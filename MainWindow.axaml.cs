@@ -32,6 +32,8 @@ public partial class MainWindow : Window
         // Define File settings
         public string? LastUsedFile { get; set; }
         public string? LastUsedFolder { get; set; }
+        // Define Edit settings
+        public bool? RectangularEditSetting { get; set; }
         // Define View settings
         public bool? RowHighlightSetting { get; set; }
         public bool? SpacesEditorSetting { get; set; }
@@ -92,7 +94,8 @@ public partial class MainWindow : Window
         
         RefreshSettings();
         RefreshIsChecked();
-        
+
+        Editor.Options.EnableRectangularSelection = true;
         Editor.Options.AllowToggleOverstrikeMode = true;
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
         
@@ -220,6 +223,11 @@ public partial class MainWindow : Window
     private void Paste(object? sender, RoutedEventArgs e)
     {
         Editor.Paste();
+    }
+    private void ToggleRectangularSelectionButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.EnableRectangularSelection = !Editor.Options.EnableRectangularSelection;
+        SaveSettings();
     }
     private void Clear(object? sender, RoutedEventArgs e)
     {
@@ -449,6 +457,7 @@ public partial class MainWindow : Window
         {
             ThemeSetting = GetValue(RequestedThemeVariantProperty).ToString(),
             FontFamilySetting = Editor.FontFamily.Name,
+            RectangularEditSetting = Editor.Options.EnableRectangularSelection,
             RowHighlightSetting = Editor.Options.HighlightCurrentLine,
             GridLinesSetting = MainGrid.ShowGridLines,
             StatusBarSetting = StatusBar.GetValue(Grid.RowProperty),
@@ -509,6 +518,19 @@ public partial class MainWindow : Window
                 break;
         }
         // Refresh MenuBar settings
+        // Edit
+        switch (userSettings.RectangularEditSetting)
+        {
+            case null:
+                Editor.Options.EnableRectangularSelection = true;
+                break;
+            case true:
+                Editor.Options.EnableRectangularSelection = true;
+                break;
+            case false:
+                Editor.Options.EnableRectangularSelection = false;
+                break;
+        }
         // View
         switch (userSettings.RowHighlightSetting)
         {
@@ -648,6 +670,16 @@ public partial class MainWindow : Window
                 SystemThemeItem.IsChecked = false;
                 DarkThemeItem.IsChecked = false;
                 LightThemeItem.IsChecked = true;
+                break;
+        }
+        // Refresh Edit settings checkboxes
+        switch (Editor.Options.EnableRectangularSelection)
+        {
+            case true:
+                ToggleRectangularSelectionButton.IsChecked = true;
+                break;
+            case false:
+                ToggleRectangularSelectionButton.IsChecked = false;
                 break;
         }
         // Refresh View settings checkboxes
