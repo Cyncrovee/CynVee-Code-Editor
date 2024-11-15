@@ -39,6 +39,7 @@
                 <MenuItem Click="OpenFind" Header="Find" InputGesture="Ctrl+F"/>
                 <MenuItem Click="OpenFindReplace" Header="Find and Replace" InputGesture="Ctrl+H"/>
                 <Separator/>
+                <MenuItem x:Name="ToggleWordWrapButton" Click="ToggleWordWrapButton_OnClick" Header="Toggle Word Wrap"/>
                 <MenuItem x:Name="ToggleRectangularSelectionButton" Click="ToggleRectangularSelectionButton_OnClick" Header="Toggle Rectangular Selection" ToggleType="CheckBox"/>
                 <Separator/>
                 <MenuItem Click="Clear" Header="Clear"/>

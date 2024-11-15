@@ -243,6 +243,10 @@ public partial class MainWindow : Window
         if (Clipboard == null || _filePath == string.Empty) return;
         Clipboard.SetTextAsync(_filePath);
     }
+    private void ToggleWordWrapButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.WordWrap = !Editor.WordWrap;
+    }
     private void ToggleRectangularSelectionButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.EnableRectangularSelection = !Editor.Options.EnableRectangularSelection;
