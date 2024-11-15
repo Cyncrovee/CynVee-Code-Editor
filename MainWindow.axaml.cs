@@ -229,6 +229,10 @@ public partial class MainWindow : Window
     {
         Editor.Paste();
     }
+    private void Delete(object? sender, RoutedEventArgs e)
+    {
+        Editor.Delete();
+    }
     private void CopyFolderPathButton_OnClick(object? sender, RoutedEventArgs e)
     {
         if (Clipboard == null || _folderPath == string.Empty) return;

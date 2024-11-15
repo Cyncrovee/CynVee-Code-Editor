@@ -8,7 +8,7 @@
         Title="CynVee-Code-Editor">
     <Grid x:Name="MainGrid" ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto, Auto, *, Auto">
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+            <MenuItem Header="File">
                 <MenuItem Click="OpenFileButton_OnClick" Header="Open File..." InputGesture="Ctrl+O" HotKey="Ctrl+O"/>
                 <MenuItem Click="OpenFolderButton_OnClick" Header="Open Folder..." InputGesture="Ctrl+Shift+O" HotKey="Ctrl+Shift+O"/>
                 <MenuItem Click="SaveButton_OnClick" Header="Save" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
@@ -20,7 +20,7 @@
                 <Separator/>
                 <MenuItem Click="Exit" Header="_Exit"/>
             </MenuItem>
-            <MenuItem Header="_Edit">
+            <MenuItem Header="Edit">
                 <MenuItem Click="UndoButton_OnClick" Header="Undo" InputGesture="Ctrl+Z"/>
                 <MenuItem Click="RedoButton_OnClick" Header="Redo" InputGesture="Ctrl+Y"/>
                 <Separator/>
@@ -29,6 +29,7 @@
                 <MenuItem Click="Cut" Header="Cut" InputGesture="Ctrl+X"/>
                 <MenuItem Click="Copy" Header="Copy" InputGesture="Ctrl+C"/>
                 <MenuItem Click="Paste" Header="Paste" InputGesture="Ctrl+V"/>
+                <MenuItem Click="Delete" Header="Delete" InputGesture="Delete"/>
                 <Separator/>
                 <MenuItem Header="Copy...">
                     <MenuItem Header="Copy Current Folder Path" Click="CopyFolderPathButton_OnClick"/>
