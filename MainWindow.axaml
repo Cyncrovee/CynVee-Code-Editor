@@ -39,6 +39,7 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem x:Name="FullscreenToggleButton" Click="FullscreenToggleButton_OnClick" Header="Toggle Fullscreen" ToggleType="CheckBox"/>
+                <MenuItem x:Name="EditorViewButton" Click="EditorViewButton_OnClick" Header="Focus View on Editor" ToggleType="CheckBox"/>
                 <Separator/>
                 <MenuItem x:Name="HighlightRowButton" Click="HighlightRowButton_OnClick" Header="Highlight Current Row" ToggleType="CheckBox" IsChecked="True"/>
                 <Separator/>

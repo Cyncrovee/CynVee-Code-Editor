@@ -58,7 +58,6 @@ public partial class MainWindow : Window
         
         GetSettingsFile();
         
-        Console.WriteLine(Directory.GetCurrentDirectory());
         var settingsFilePath = String.Empty;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -69,6 +68,7 @@ public partial class MainWindow : Window
             settingsFilePath = Directory.GetCurrentDirectory() + "/CynVee-Code-Editor-Settings.json";
         }
         
+        // Create settings file if it does not exist
         if (File.Exists(settingsFilePath))
         {
             Console.WriteLine("Settings file found");
@@ -92,19 +92,23 @@ public partial class MainWindow : Window
             writer.Close();
         }
         
+        // Refresh all settings and checkboxes
         RefreshSettings();
         RefreshIsChecked();
 
+        // Set options for Editor
         Editor.Options.EnableRectangularSelection = true;
         Editor.Options.AllowToggleOverstrikeMode = true;
         Editor.TextArea.Caret.PositionChanged += EditorCaret_PositionChanged;
         
+        // Add indentation sizes to IndentationSizeComboBox
         int[] indentationSizes = Enumerable.Range(1, 64).ToArray();
         foreach (var  indentationSize in indentationSizes)
         {
             IndentationSizeComboBox.Items.Add(indentationSize);
         }
         
+        // Add font families to FontFamilyComboBox
         foreach (var font in FontManager.Current.SystemFonts.OrderBy(f => f.Name))
         {
             FontFamilyComboBox.Items.Add(font);
@@ -113,6 +117,7 @@ public partial class MainWindow : Window
     
     private string _filePath = string.Empty;
     private string _folderPath = string.Empty;
+    private bool _isEditorView = false;
     
     
     // MenuBar functions
@@ -257,6 +262,30 @@ public partial class MainWindow : Window
             case WindowState.FullScreen:
                 WindowState = WindowState.Normal;
                 FullscreenToggleButton.IsChecked = false;
+                break;
+        }
+    }
+    private void EditorViewButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        switch (_isEditorView)
+        {
+            case true:
+                FolderPathBlock.IsVisible = true;
+                FilePathBlock.IsVisible = true;
+                OpenFolderButton.IsVisible = true;
+                OpenFileButton.IsVisible = true;
+                SettingsButton.IsVisible = true;
+                FileList.IsVisible = true;
+                _isEditorView = false;
+                break;
+            case false:
+                FolderPathBlock.IsVisible = false;
+                FilePathBlock.IsVisible = false;
+                OpenFolderButton.IsVisible = false;
+                OpenFileButton.IsVisible = false;
+                SettingsButton.IsVisible = false;
+                FileList.IsVisible = false;
+                _isEditorView = true;
                 break;
         }
     }
