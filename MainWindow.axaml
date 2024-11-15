@@ -38,6 +38,8 @@
                 <MenuItem Click="Clear" Header="Clear"/>
             </MenuItem>
             <MenuItem Header="View">
+                <MenuItem x:Name="FullscreenToggleButton" Click="FullscreenToggleButton_OnClick" Header="Toggle Fullscreen" ToggleType="CheckBox"/>
+                <Separator/>
                 <MenuItem x:Name="HighlightRowButton" Click="HighlightRowButton_OnClick" Header="Highlight Current Row" ToggleType="CheckBox" IsChecked="True"/>
                 <Separator/>
                 <MenuItem x:Name="SpacesButton" Click="SpacesButton_OnClick" Header="Show/Hide Spaces" ToggleType="CheckBox"/>

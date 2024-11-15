@@ -246,6 +246,20 @@ public partial class MainWindow : Window
         Editor.SearchPanel.IsReplaceMode = true;
     }
     // "View"
+    private void FullscreenToggleButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        switch (WindowState)
+        {
+            case WindowState.Normal:
+                WindowState = WindowState.FullScreen;
+                FullscreenToggleButton.IsChecked = true;
+                break;
+            case WindowState.FullScreen:
+                WindowState = WindowState.Normal;
+                FullscreenToggleButton.IsChecked = false;
+                break;
+        }
+    }
     private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.HighlightCurrentLine = !Editor.Options.HighlightCurrentLine;
