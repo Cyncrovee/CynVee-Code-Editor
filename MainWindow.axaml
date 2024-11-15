@@ -30,6 +30,11 @@
                 <MenuItem Click="Copy" Header="Copy" InputGesture="Ctrl+C"/>
                 <MenuItem Click="Paste" Header="Paste" InputGesture="Ctrl+V"/>
                 <Separator/>
+                <MenuItem Header="Copy...">
+                    <MenuItem Header="Copy Current Folder Path" Click="CopyFolderPathButton_OnClick"/>
+                    <MenuItem Header="Copy Current File Path" Click="CopyFilePathButton_OnClick"/>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Click="OpenFind" Header="Find" InputGesture="Ctrl+F"/>
                 <MenuItem Click="OpenFindReplace" Header="Find and Replace" InputGesture="Ctrl+H"/>
                 <Separator/>
@@ -38,7 +43,7 @@
                 <MenuItem Click="Clear" Header="Clear"/>
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem x:Name="FullscreenToggleButton" Click="FullscreenToggleButton_OnClick" Header="Toggle Fullscreen" ToggleType="CheckBox"/>
+                <MenuItem x:Name="FullscreenToggleButton" Click="FullscreenToggleButton_OnClick" Header="Toggle Fullscreen" ToggleType="CheckBox" InputGesture="F11" HotKey="F11"/>
                 <MenuItem x:Name="ToggleTopmostButton" Click="ToggleTopmostButton_OnClick" Header="Toggle Always on Top" ToggleType="CheckBox"/>
                 <MenuItem x:Name="EditorViewButton" Click="EditorViewButton_OnClick" Header="Focus View on Editor" ToggleType="CheckBox"/>
                 <Separator/>

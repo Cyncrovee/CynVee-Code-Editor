@@ -229,6 +229,16 @@ public partial class MainWindow : Window
     {
         Editor.Paste();
     }
+    private void CopyFolderPathButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Clipboard == null || _folderPath == string.Empty) return;
+        Clipboard.SetTextAsync(_folderPath);
+    }
+    private void CopyFilePathButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (Clipboard == null || _filePath == string.Empty) return;
+        Clipboard.SetTextAsync(_filePath);
+    }
     private void ToggleRectangularSelectionButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Editor.Options.EnableRectangularSelection = !Editor.Options.EnableRectangularSelection;
