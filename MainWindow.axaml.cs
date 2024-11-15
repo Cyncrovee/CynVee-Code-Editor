@@ -265,6 +265,10 @@ public partial class MainWindow : Window
                 break;
         }
     }
+    private void ToggleTopmostButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Topmost = !Topmost;
+    }
     private void EditorViewButton_OnClick(object? sender, RoutedEventArgs e)
     {
         switch (_isEditorView)
