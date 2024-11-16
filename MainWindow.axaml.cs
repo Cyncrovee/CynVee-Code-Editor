@@ -243,15 +243,6 @@ public partial class MainWindow : Window
         if (Clipboard == null || _filePath == string.Empty) return;
         Clipboard.SetTextAsync(_filePath);
     }
-    private void ToggleWordWrapButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        Editor.WordWrap = !Editor.WordWrap;
-    }
-    private void ToggleRectangularSelectionButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        Editor.Options.EnableRectangularSelection = !Editor.Options.EnableRectangularSelection;
-        SaveSettings();
-    }
     private void Clear(object? sender, RoutedEventArgs e)
     {
         Editor.Clear();
@@ -267,6 +258,25 @@ public partial class MainWindow : Window
         Editor.SearchPanel.Close();
         Editor.SearchPanel.Open();
         Editor.SearchPanel.IsReplaceMode = true;
+    }
+    private void ConvertToUppercase_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var convertedText = Editor.SelectedText.ToUpper();
+        Editor.SelectedText = convertedText;
+    }
+    private void ConvertToLowercase_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var convertedText = Editor.SelectedText.ToLower();
+        Editor.SelectedText = convertedText;
+    }
+    private void ToggleWordWrapButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.WordWrap = !Editor.WordWrap;
+    }
+    private void ToggleRectangularSelectionButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.EnableRectangularSelection = !Editor.Options.EnableRectangularSelection;
+        SaveSettings();
     }
     // "View"
     private void FullscreenToggleButton_OnClick(object? sender, RoutedEventArgs e)

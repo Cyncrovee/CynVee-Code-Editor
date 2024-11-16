@@ -18,7 +18,7 @@
                 <MenuItem x:Name="LastFolderButton" Click="LastFolderButton_OnClick" Header="Fetch Last Used Folder"/>
                 <MenuItem Click="ExitFileFolder_OnClick" Header="Exit File/Folder"/>
                 <Separator/>
-                <MenuItem Click="Exit" Header="_Exit"/>
+                <MenuItem Click="Exit" Header="Exit" InputGesture="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Click="UndoButton_OnClick" Header="Undo" InputGesture="Ctrl+Z"/>
@@ -38,6 +38,11 @@
                 <Separator/>
                 <MenuItem Click="OpenFind" Header="Find" InputGesture="Ctrl+F"/>
                 <MenuItem Click="OpenFindReplace" Header="Find and Replace" InputGesture="Ctrl+H"/>
+                <Separator/>
+                <MenuItem Header="Convert Selection Case...">
+                    <MenuItem Click="ConvertToUppercase_OnClick" Header="Uppercase" InputGesture="Ctrl+Shift+U" HotKey="Ctrl+Shift+U"/>
+                    <MenuItem Click="ConvertToLowercase_OnClick" Header="Lowercase" InputGesture="Ctrl+U" HotKey="Ctrl+U"/>
+                </MenuItem>
                 <Separator/>
                 <MenuItem x:Name="ToggleWordWrapButton" Click="ToggleWordWrapButton_OnClick" Header="Toggle Word Wrap"/>
                 <MenuItem x:Name="ToggleRectangularSelectionButton" Click="ToggleRectangularSelectionButton_OnClick" Header="Toggle Rectangular Selection" ToggleType="CheckBox"/>
