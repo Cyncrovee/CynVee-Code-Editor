@@ -14,6 +14,8 @@
                 <MenuItem Click="SaveButton_OnClick" Header="Save" InputGesture="Ctrl+S" HotKey="Ctrl+S"/>
                 <MenuItem x:Name="SaveAsButton" Click="SaveAsButton_OnClick" Header="Save As..." InputGesture="Ctrl+Shift+S" HotKey="Ctrl+Shift+S"/>
                 <Separator/>
+                <MenuItem Click="OpenContainingFolder_OnClick" Header="Open Containing Folder in File List"/>
+                <Separator/>
                 <MenuItem x:Name="LastFileButton" Click="LastFileButton_OnClick" Header="Fetch Last Used File"/>
                 <MenuItem x:Name="LastFolderButton" Click="LastFolderButton_OnClick" Header="Fetch Last Used Folder"/>
                 <MenuItem Click="ExitFileFolder_OnClick" Header="Exit File/Folder"/>

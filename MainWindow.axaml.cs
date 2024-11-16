@@ -159,6 +159,13 @@ public partial class MainWindow : Window
             Console.WriteLine("No file created");
         }
     }
+    private void OpenContainingFolder_OnClick(object? sender, RoutedEventArgs e)
+    {
+        FileInfo fileInfo = new FileInfo(_filePath);
+        var directoryPath = fileInfo.Directory;
+        _folderPath = directoryPath.FullName;
+        RefreshList();
+    }
     private void LastFolderButton_OnClick(object? sender, RoutedEventArgs e)
     {
         var jsonString = File.ReadAllText(_settingsFile);
@@ -874,6 +881,7 @@ public partial class MainWindow : Window
             {
                 FileList.Items.Add(file);
             }
+            FolderPathBlock.Text = "Currently Selected File: " + _folderPath;
         }
         else
         {
