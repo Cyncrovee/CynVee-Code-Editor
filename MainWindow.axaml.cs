@@ -161,6 +161,7 @@ public partial class MainWindow : Window
     }
     private void OpenContainingFolder_OnClick(object? sender, RoutedEventArgs e)
     {
+        if (_filePath == string.Empty) return;
         FileInfo fileInfo = new FileInfo(_filePath);
         var directoryPath = fileInfo.Directory;
         _folderPath = directoryPath.FullName;
@@ -315,7 +316,12 @@ public partial class MainWindow : Window
                 OpenFileButton.IsVisible = true;
                 SettingsButton.IsVisible = true;
                 FileList.IsVisible = true;
+                ListViewButton.IsChecked = true;
+                ListViewButton.IsVisible = true;
                 _isEditorView = false;
+                Editor.SetValue(Grid.ColumnProperty, 0);
+                Editor.SetValue(Grid.RowProperty, 4);
+                Editor.SetValue(Grid.ColumnSpanProperty, 1);
                 break;
             case false:
                 FolderPathBlock.IsVisible = false;
@@ -324,6 +330,8 @@ public partial class MainWindow : Window
                 OpenFileButton.IsVisible = false;
                 SettingsButton.IsVisible = false;
                 FileList.IsVisible = false;
+                ListViewButton.IsChecked = false;
+                ListViewButton.IsVisible = false;
                 _isEditorView = true;
                 break;
         }
@@ -355,6 +363,7 @@ public partial class MainWindow : Window
     }
     private void ListViewButton_OnClick(object? sender, RoutedEventArgs e)
     {
+        if (_isEditorView) return;
         FileList.IsVisible = !FileList.IsVisible;
         switch (Editor.GetValue(Grid.ColumnSpanProperty))
         {
