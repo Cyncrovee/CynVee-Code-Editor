@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -35,6 +34,7 @@ public partial class MainWindow : Window
         // Define Edit settings
         public bool? RectangularEditSetting { get; set; }
         // Define View settings
+        public bool? ScrollBelowDocumentSetting { get; set; }
         public bool? RowHighlightSetting { get; set; }
         public bool? SpacesEditorSetting { get; set; }
         public bool? TabSpacesEditorSetting { get; set; }
@@ -201,7 +201,6 @@ public partial class MainWindow : Window
         _filePath = string.Empty;
         _folderPath = string.Empty;
         
-        Editor.Clear();
         FileList.Items.Clear();
         
         FolderPathBlock.Text = "Currently Selected Folder: ";
@@ -335,6 +334,11 @@ public partial class MainWindow : Window
                 _isEditorView = true;
                 break;
         }
+    }
+    private void ScrollBelowDocument_OnClick(object? sender, RoutedEventArgs e)
+    {
+        Editor.Options.AllowScrollBelowDocument = !Editor.Options.AllowScrollBelowDocument;
+        SaveSettings();
     }
     private void HighlightRowButton_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -549,6 +553,7 @@ public partial class MainWindow : Window
             ThemeSetting = GetValue(RequestedThemeVariantProperty).ToString(),
             FontFamilySetting = Editor.FontFamily.Name,
             RectangularEditSetting = Editor.Options.EnableRectangularSelection,
+            ScrollBelowDocumentSetting = Editor.Options.AllowScrollBelowDocument,
             RowHighlightSetting = Editor.Options.HighlightCurrentLine,
             GridLinesSetting = MainGrid.ShowGridLines,
             StatusBarSetting = StatusBar.GetValue(Grid.RowProperty),
@@ -623,6 +628,18 @@ public partial class MainWindow : Window
                 break;
         }
         // View
+        switch (userSettings.ScrollBelowDocumentSetting)
+        {
+            case null:
+                Editor.Options.AllowScrollBelowDocument = true;
+                break;
+            case true:
+                Editor.Options.AllowScrollBelowDocument = true;
+                break;
+            case false:
+                Editor.Options.AllowScrollBelowDocument = false;
+                break;
+        }
         switch (userSettings.RowHighlightSetting)
         {
             case null:
@@ -774,6 +791,15 @@ public partial class MainWindow : Window
                 break;
         }
         // Refresh View settings checkboxes
+        switch (Editor.Options.AllowScrollBelowDocument)
+        {
+            case true:
+                ScrollBelowDocumentButton.IsChecked = true;
+                break;
+            case false:
+                ScrollBelowDocumentButton.IsChecked = false;
+                break;
+        }
         switch (Editor.Options.HighlightCurrentLine)
         {
             case true:
