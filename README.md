@@ -1,4 +1,6 @@
 ## CynVee-Code-Editor
+# PROJECT HAS BEEN MOVED TO: https://github.com/Cyncrovee/Enviredit
+
 A code editor made with the Avalonia UI framework
 ![CynVee-Code-Editor-Screenshot](https://github.com/user-attachments/assets/2eda71a6-5dff-496c-9de7-2cd19b6643f7)
 
